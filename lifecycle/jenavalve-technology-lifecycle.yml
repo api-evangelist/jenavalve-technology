@@ -1,0 +1,77 @@
+generated: '2026-08-04'
+method: probed
+source: >-
+  Searched jenavalve.com and discover-ar.com for versioning, deprecation, SLA, changelog and
+  status pages; probed candidate subdomains. Derived version scheme from observed routes.
+summary: >-
+  There is no API lifecycle to describe, because there is no API programme. JenaValve makes no
+  version commitment, publishes no deprecation policy, offers no SLA, runs no status page and
+  keeps no changelog. The version segments in the URL paths belong to WordPress core and its
+  plugins, not to JenaValve. Any third party building against these hosts is building against
+  an unversioned, uncommitted, unannounced surface that can change or disappear with a routine
+  CMS update.
+versioning:
+  scheme: uri-path-namespace
+  current: wp/v2
+  other_namespaces: [oembed/1.0, yoast/v1, wp-site-health/v1, wp-block-editor/v1, wp-abilities/v1]
+  owned_by: WordPress core and third-party plugins
+  policy_url: null
+  detail: >-
+    wp/v2 is the WordPress core REST namespace and has been stable across WordPress releases
+    for years, which gives the surface incidental stability — but that stability is WordPress's
+    property, not a JenaValve commitment, and the plugin namespaces (CookieYes cky/v1,
+    Contact Form 7, Redirection, All-in-One WP Migration ai1wm/v1, CPT UI cptui/v1,
+    PublishPress Future) change with plugin updates.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  detail: >-
+    No RFC 8594 Sunset header and no Deprecation header was observed on any response. No
+    deprecation policy is published. No Deprecation pointer is emitted for this provider.
+  deprecated_operations: []
+sla:
+  url: null
+  uptime_target: null
+  detail: No service-level agreement or uptime commitment is published for any JenaValve host.
+status_page:
+  url: null
+  detail: >-
+    No status page exists. status.jenavalve.com does not resolve (NXDOMAIN), and no status or
+    uptime link appears anywhere on jenavalve.com or discover-ar.com. No StatusPage pointer is
+    emitted for this provider.
+changelog:
+  url: null
+  detail: >-
+    No API changelog exists. The nearest human equivalent is the corporate news feed at
+    https://jenavalve.com/news/ (38 posts, mostly press releases and clinical milestones),
+    which is company news rather than a technical changelog and is wired as Blog/News, not as
+    ChangeLog.
+support:
+  url: https://jenavalve.com/contact/
+  detail: >-
+    General corporate contact only — no developer support channel, no community forum, no
+    issue tracker and no developer mailing list. The only published email address is
+    reimbursement.usa@jenavalve.com, which is for reimbursement enquiries, not technical
+    support.
+certificates:
+- host: jenavalve.com
+  expires: 'Oct 25 17:16:08 2026 GMT'
+- host: discover-ar.com
+  expires: 'Sep 26 17:16:02 2026 GMT'
+content_currency:
+  detail: >-
+    Observed on 2026-08-04: newest jenavalve.com post dated 2026-04-01, newest page modified
+    2026-06-15, newest media item uploaded 2026-07-10. The site is actively maintained, which
+    is the only real freshness signal available for this surface.
+stability_risk:
+  level: high
+  reasons:
+  - No version, deprecation or change commitment of any kind from the provider.
+  - >-
+    The surface is a side effect of the CMS. A plugin update, a security hardening pass or a
+    platform migration could close or reshape it without any announcement.
+  - >-
+    Plugin namespaces present today (cky/v1, cptui/v1, ai1wm/v1, publishpress-future/v1,
+    yoast/v1) exist only while those plugins remain installed.
+  - No status page or support channel exists to learn about a change from.

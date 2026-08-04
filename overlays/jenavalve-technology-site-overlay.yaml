@@ -1,0 +1,67 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the JenaValve Site API
+  version: 1.0.0
+extends: openapi/jenavalve-technology-site-openapi.yml
+x-generated: '2026-08-04'
+x-method: generated
+x-source: >-
+  API Evangelist enrichment pipeline. Captures the annotations we add on top of the derived
+  spec so the derived spec itself stays a plain description of what was probed.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/provider/jenavalve-technology
+    x-apievangelist-posture: no-product-api
+    x-apievangelist-surface: incidental-cms
+    x-apievangelist-provider-published: false
+    x-apievangelist-probe-date: '2026-08-04'
+    x-apievangelist-note: >-
+      This description was derived by API Evangelist from anonymous probing. JenaValve
+      Technology does not publish it, does not support it, and has made no commitment about it.
+- target: $.info
+  update:
+    x-lifecycle: lifecycle/jenavalve-technology-lifecycle.yml
+    x-conventions: conventions/jenavalve-technology-conventions.yml
+    x-authentication: authentication/jenavalve-technology-authentication.yml
+    x-error-catalog: errors/jenavalve-technology-problem-types.yml
+    x-data-model: data-model/jenavalve-technology-data-model.yml
+    x-conformance: conformance/jenavalve-technology-conformance.yml
+- target: $.info
+  update:
+    x-stability: unversioned-uncommitted
+    x-stability-note: >-
+      No versioning policy, no deprecation policy, no SLA, no status page and no changelog. The
+      wp/v2 namespace belongs to WordPress core, not to JenaValve.
+- target: $.info
+  update:
+    x-rate-limit-signalled: false
+    x-rate-limit-note: >-
+      No rate-limit headers are returned. An unannounced origin or CDN limit may still exist —
+      back off on 429 and 5xx regardless.
+- target: $.paths['/wp/v2/search'].get
+  update:
+    x-apievangelist-recommended: true
+    x-apievangelist-note: >-
+      The highest-value anonymous operation on this host for an agent: one call locates any
+      JenaValve content by free text and returns a dereferenceable URL, with no HTML crawling.
+- target: $.paths['/wp/v2/posts'].get
+  update:
+    x-apievangelist-note: >-
+      Filter by the `press` category (id 13, 28 posts) for press releases or `videos` (id 17,
+      10 posts) for video content. Combine with _fields to avoid pulling rendered HTML bodies.
+- target: $.paths['/wp/v2/media'].get
+  update:
+    x-apievangelist-note: >-
+      Where the Trilogy product brochure, the 2026 reimbursement guide and the labeling symbols
+      glossary PDFs are addressable, via source_url and mime_type=application/pdf.
+- target: $.paths['/wp/v2/users'].get
+  update:
+    x-apievangelist-hardening-note: >-
+      Anonymous author enumeration is enabled (WordPress default). Only public byline fields are
+      returned — no email, no role. Noted as a hardening consideration for the site owner.
+- target: $.components.parameters.PerPage
+  update:
+    x-apievangelist-note: >-
+      Not clamped. per_page above 100 returns HTTP 400 rest_invalid_param rather than being
+      reduced to the maximum.

@@ -1,0 +1,104 @@
+generated: '2026-08-04'
+method: probed
+source: live GET of the /.well-known/ discovery surface on every JenaValve host
+summary: >-
+  No /.well-known/ discovery document exists on any JenaValve host. jenavalve.com and
+  discover-ar.com return a genuine HTTP 404 for every probed path. eifu.jenavalve.com is a
+  Next.js single-page application whose catch-all route answers HTTP 200 with the same 2,454-byte
+  HTML shell for every path including nonsense ones — those 200s are NOT documents and are
+  recorded as false positives, not hits. No security.txt, no OIDC or OAuth discovery, no
+  api-catalog, no ai-plugin.json and no A2A agent card at either the canonical
+  /.well-known/agent-card.json or the legacy /.well-known/agent.json path.
+hosts:
+- host: https://jenavalve.com
+  note: Corporate site (WordPress). Genuine 404s — the 404 body is the site's HTML error page.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://discover-ar.com
+  note: Patient-education site (WordPress). Genuine 404s.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: https://eifu.jenavalve.com
+  note: >-
+    Electronic Instructions For Use portal, a Next.js SPA operated on the third-party ifucare.io
+    platform. Its catch-all route returns HTTP 200 with an identical 2,454-byte HTML document for
+    EVERY path probed, including /openapi.json, /robots.txt and both agent-card paths. These are
+    SPA catch-all responses, not published documents. Recorded as false_positive so a later run
+    does not mistake the 200 for a hit.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    result: false_positive
+    content_type: text/html
+  - path: /.well-known/agent-card.json
+    status: 200
+    result: false_positive
+    content_type: text/html
+  - path: /.well-known/agent.json
+    status: 200
+    result: false_positive
+    content_type: text/html
+  - path: /.well-known/openid-configuration
+    status: 200
+    result: false_positive
+    content_type: text/html
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    result: false_positive
+    content_type: text/html
+  - path: /.well-known/api-catalog
+    status: 200
+    result: false_positive
+    content_type: text/html
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    result: false_positive
+    content_type: text/html
+related_discovery:
+- path: /robots.txt
+  host: https://jenavalve.com
+  status: 200
+  note: Disallows /wp-admin/ only; does not mention /wp-json. Points at /wp-sitemap.xml.
+- path: /wp-sitemap.xml
+  host: https://jenavalve.com
+  status: 200
+  note: WordPress core sitemap index — posts, pages, categories and users sub-sitemaps.
+- path: /robots.txt
+  host: https://discover-ar.com
+  status: 200
+  note: Yoast-generated; empty Disallow.
+- path: /llms.txt
+  host: https://jenavalve.com
+  status: 404
+- path: /llms.txt
+  host: https://discover-ar.com
+  status: 404
+x-evidence:
+  fetched: '2026-08-04'
+  method: curl GET, following redirects, 20s timeout

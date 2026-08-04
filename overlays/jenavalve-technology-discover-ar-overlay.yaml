@@ -1,0 +1,52 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the JenaValve Discover AR Site API
+  version: 1.0.0
+extends: openapi/jenavalve-technology-discover-ar-openapi.yml
+x-generated: '2026-08-04'
+x-method: generated
+x-source: API Evangelist enrichment pipeline.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-profile: https://apis.io/provider/jenavalve-technology
+    x-apievangelist-posture: no-product-api
+    x-apievangelist-surface: incidental-cms
+    x-apievangelist-provider-published: false
+    x-apievangelist-probe-date: '2026-08-04'
+    x-apievangelist-note: >-
+      Derived by API Evangelist from anonymous probing. JenaValve Technology does not publish,
+      document or support this surface.
+- target: $.info
+  update:
+    x-conventions: conventions/jenavalve-technology-conventions.yml
+    x-authentication: authentication/jenavalve-technology-authentication.yml
+    x-error-catalog: errors/jenavalve-technology-problem-types.yml
+    x-data-model: data-model/jenavalve-technology-data-model.yml
+    x-conformance: conformance/jenavalve-technology-conformance.yml
+- target: $.info
+  update:
+    x-stability: unversioned-uncommitted
+    x-related-host: https://jenavalve.com/wp-json
+    x-related-note: >-
+      A separate WordPress installation from jenavalve.com. The two share no identifier space —
+      the same integer id means different things on each host.
+- target: $.paths['/wp/v2/categories'].get
+  update:
+    x-apievangelist-recommended: true
+    x-apievangelist-note: >-
+      The most editorially meaningful endpoint across either JenaValve host. This taxonomy is
+      purpose-built to segment the aortic-regurgitation education library by media format —
+      articles (id 12), videos (id 13), presentations (id 14), audio (id 15) — so a consumer can
+      retrieve, say, every AR audio item without scraping the resources page.
+- target: $.paths['/wp/v2/posts'].get
+  update:
+    x-apievangelist-note: >-
+      Pass ?categories=13 for videos, 12 for articles, 15 for audio. Counts as of 2026-08-04:
+      videos 6, articles 4, audio 3, presentations 0.
+- target: $.paths['/yoast/v1/get_head'].get
+  update:
+    x-apievangelist-note: >-
+      Returns rendered head metadata including schema.org JSON-LD for any discover-ar.com URL —
+      structured metadata for a library item without parsing the page HTML. Present on this host
+      only; jenavalve.com does not run Yoast.

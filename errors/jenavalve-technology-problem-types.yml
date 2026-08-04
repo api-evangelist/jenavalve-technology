@@ -1,0 +1,95 @@
+generated: '2026-08-04'
+method: probed
+source: >-
+  Error bodies observed directly from https://jenavalve.com/wp-json and
+  https://discover-ar.com/wp-json, 2026-08-04. JenaValve publishes no error reference.
+format: wordpress-rest
+rfc9457: false
+envelope:
+  media_type: application/json
+  fields:
+  - name: code
+    description: Machine-readable error slug. This is the field to branch on, not the HTTP status.
+  - name: message
+    description: Human-readable message. Wording is WordPress core's and may be localized.
+  - name: data.status
+    description: The HTTP status code, duplicated inside the body.
+  - name: data.params
+    description: >-
+      Present only on rest_invalid_param — a map of offending parameter name to a validation
+      message.
+  note: >-
+    Served as application/json, not application/problem+json. There is no `type` URI and no
+    `instance`, so these are not RFC 9457 problem details and cannot be dereferenced. An agent
+    should key on `code`.
+problems:
+- code: rest_post_invalid_id
+  status: 404
+  title: Invalid post ID
+  message: Invalid post ID.
+  meaning: No object of the requested type exists with that numeric ID.
+  remediation: >-
+    Discover valid IDs from the collection endpoint rather than guessing; IDs are not
+    contiguous and are shared across post types.
+  observed_on: GET /wp/v2/posts/999999
+  source_operation: openapi/jenavalve-technology-site-openapi.yml#getPost
+- code: rest_invalid_param
+  status: 400
+  title: Invalid parameter
+  message: 'Invalid parameter(s): per_page'
+  meaning: >-
+    One or more query parameters failed validation. data.params names each offender. Notably
+    per_page is NOT clamped to its maximum — exceeding 100 is a hard 400.
+  remediation: Read data.params, correct the named parameter, retry. Keep per_page <= 100.
+  observed_on: GET /wp/v2/posts?per_page=200
+  source_operation: openapi/jenavalve-technology-site-openapi.yml#listPosts
+- code: rest_forbidden
+  status: 401
+  title: Not allowed
+  message: Sorry, you are not allowed to do that.
+  meaning: >-
+    The route requires an authenticated WordPress user. Returned by wp/v2/settings,
+    wp-abilities/v1/abilities and wp-site-health/v1 routes.
+  remediation: >-
+    Not remediable by a third party — no public credential exists for these hosts. Treat these
+    routes as out of scope rather than retrying.
+  observed_on: GET /wp/v2/settings
+- code: rest_block_type_cannot_view
+  status: 401
+  title: Cannot manage block types
+  message: Sorry, you are not allowed to manage block types.
+  meaning: The block-type registry requires an authenticated editor.
+  remediation: Not remediable by a third party.
+  observed_on: GET /wp/v2/block-types
+- code: rest_cannot_view
+  status: 401
+  title: Cannot view menu items
+  message: Sorry, you are not allowed to view menu items.
+  meaning: >-
+    The classic nav_menu_item collection requires authentication, even though the block-editor
+    wp/v2/navigation collection answers anonymously.
+  remediation: >-
+    Use wp/v2/navigation instead, or derive site structure from wp/v2/pages menu_order and
+    parent, or from the sitemap.
+  observed_on: GET /wp/v2/menu-items
+- code: cookieyes_rest_cannot_view
+  status: 401
+  title: Cannot list CookieYes resources
+  message: Sorry, you cannot list resources.
+  meaning: The CookieYes consent-management plugin's settings routes require authentication.
+  remediation: Not remediable by a third party.
+  observed_on: GET /cky/v1/settings
+- code: wpcf7_forbidden
+  status: 403
+  title: Contact forms forbidden
+  message: You are not allowed to access contact forms.
+  meaning: >-
+    Contact Form 7 blocks anonymous listing of form definitions. Note this is the only 403 on
+    the surface; every other denial is a 401.
+  remediation: Use the human contact page at https://jenavalve.com/contact/ instead.
+  observed_on: GET /contact-form-7/v1/contact-forms
+unobserved:
+  note: >-
+    No 429 and no 5xx was produced during probing, so no rate-limit or server-error shape could
+    be captured. Their absence here is an absence of evidence, not evidence that they cannot
+    occur.

@@ -1,0 +1,1097 @@
+openapi: 3.1.0
+info:
+  title: JenaValve Site API (WordPress REST)
+  version: '1.0'
+  summary: Anonymously readable content REST surface served by jenavalve.com at /wp-json.
+  description: >-
+    Derived, third-party OpenAPI description of the anonymously readable portion of the
+    WordPress REST API served by the JenaValve corporate site at https://jenavalve.com/wp-json.
+    JenaValve Technology publishes no developer API programme, no portal, no documentation and
+    no keys; this is an incidental surface exposed by the site's CMS, described here because it
+    is a real, machine-readable, publicly reachable contract.
+
+    Every operation below was individually probed anonymously on 2026-08-04 and returned HTTP
+    200. Routes that returned 401/403 anonymously (wp/v2/settings, wp/v2/block-types,
+    wp/v2/menu-items, cky/v1/*, contact-form-7/v1/*, wp-site-health/v1/*, wp-abilities/v1/abilities)
+    are deliberately NOT described here — see conformance/ and authentication/ for the full
+    access-posture record. Write methods are not described: the surface answers `Allow: GET`
+    anonymously and no write was ever attempted.
+  x-derived-by: API Evangelist enrichment pipeline
+  x-derivation-method: probed
+  x-derivation-note: >-
+    Derived from the WordPress route-discovery document at https://jenavalve.com/wp-json plus
+    direct anonymous probing of each route. Schemas describe the fields actually observed in
+    responses; they are not a JenaValve-published contract.
+  x-not-an-api-product: true
+  contact:
+    name: JenaValve Technology
+    url: https://jenavalve.com/contact/
+servers:
+  - url: https://jenavalve.com/wp-json
+    description: JenaValve corporate site WordPress REST API
+tags:
+  - name: Discovery
+    description: Route and capability discovery documents.
+  - name: Content
+    description: Posts, pages and the site search index.
+  - name: Media
+    description: Uploaded media library items.
+  - name: Taxonomy
+    description: Categories and tags.
+  - name: Authors
+    description: Public author profiles attached to published content.
+  - name: oEmbed
+    description: oEmbed provider endpoint for jenavalve.com URLs.
+paths:
+  /:
+    get:
+      tags: [Discovery]
+      operationId: getApiIndex
+      summary: Get the API index
+      description: >-
+        Returns the site's WordPress REST route-discovery document — site name, description,
+        home URL, the 12 registered namespaces, the supported authentication mechanisms and
+        the full 242-route index.
+      responses:
+        '200':
+          description: Route discovery document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiIndex'
+  /wp/v2/posts:
+    get:
+      tags: [Content]
+      operationId: listPosts
+      summary: List news posts
+      description: >-
+        Lists published posts. On 2026-08-04 this collection held 38 items — JenaValve's press
+        releases, videos and expert content, as surfaced at https://jenavalve.com/news/.
+        Total count is returned in the `X-WP-Total` header and page count in `X-WP-TotalPages`.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/OrderBy'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Fields'
+        - name: categories
+          in: query
+          description: Limit to posts assigned one or more of the given category IDs.
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: after
+          in: query
+          description: Limit to posts published after a given ISO 8601 date.
+          schema:
+            type: string
+            format: date-time
+        - name: before
+          in: query
+          description: Limit to posts published before a given ISO 8601 date.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: A page of posts
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+            Link:
+              $ref: '#/components/headers/LinkPagination'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/posts/{id}:
+    get:
+      tags: [Content]
+      operationId: getPost
+      summary: Get a post by ID
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A single post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          $ref: '#/components/responses/InvalidPostId'
+  /wp/v2/pages:
+    get:
+      tags: [Content]
+      operationId: listPages
+      summary: List site pages
+      description: >-
+        Lists published pages — 18 items on 2026-08-04, covering the Trilogy System, About Us,
+        Investors, Careers, Contact, the ALIGN-AR / ARTIST / JENA-VAD clinical study pages and
+        the legal pages.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/OrderBy'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Fields'
+        - name: parent
+          in: query
+          description: Limit to pages whose parent matches one of the given IDs.
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        '200':
+          description: A page of pages
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+            Link:
+              $ref: '#/components/headers/LinkPagination'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/pages/{id}:
+    get:
+      tags: [Content]
+      operationId: getPage
+      summary: Get a page by ID
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A single page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Page'
+        '404':
+          $ref: '#/components/responses/InvalidPostId'
+  /wp/v2/search:
+    get:
+      tags: [Content]
+      operationId: searchSite
+      summary: Search site content
+      description: >-
+        Cross-type site search returning lightweight `{id, title, url, type, subtype}` hits.
+        The single most useful anonymous operation on this surface for an agent that wants to
+        locate JenaValve content without crawling the HTML site.
+      parameters:
+        - name: search
+          in: query
+          required: true
+          description: Free-text query.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - name: type
+          in: query
+          description: Restrict to an object type.
+          schema:
+            type: string
+            enum: [post, term, post-format]
+        - name: subtype
+          in: query
+          description: Restrict to a post subtype (e.g. post, page).
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Search hits
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/media:
+    get:
+      tags: [Media]
+      operationId: listMedia
+      summary: List media library items
+      description: >-
+        Lists uploaded media — 137 items on 2026-08-04, including the Trilogy product
+        brochure, the reimbursement guide, the labeling symbols glossary and leadership
+        portraits. Each item carries `source_url`, `mime_type`, `filesize` and the generated
+        `media_details.sizes` renditions.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/OrderBy'
+        - $ref: '#/components/parameters/Order'
+        - $ref: '#/components/parameters/Fields'
+        - name: media_type
+          in: query
+          description: Limit to a media type.
+          schema:
+            type: string
+            enum: [image, video, text, application, audio]
+        - name: mime_type
+          in: query
+          description: Limit to a specific MIME type.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A page of media items
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+            Link:
+              $ref: '#/components/headers/LinkPagination'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MediaItem'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/media/{id}:
+    get:
+      tags: [Media]
+      operationId: getMediaItem
+      summary: Get a media item by ID
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A single media item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaItem'
+        '404':
+          $ref: '#/components/responses/InvalidPostId'
+  /wp/v2/categories:
+    get:
+      tags: [Taxonomy]
+      operationId: listCategories
+      summary: List post categories
+      description: >-
+        Lists the category taxonomy. Four terms exist — `press` (28 posts), `videos` (10),
+        `experts` (0) and `uncategorized` (0) — which is the practical way to segment the
+        news feed.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Slug'
+        - name: hide_empty
+          in: query
+          description: Omit terms that have no assigned posts.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A page of category terms
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Term'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/categories/{id}:
+    get:
+      tags: [Taxonomy]
+      operationId: getCategory
+      summary: Get a category by ID
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A single category term
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Term'
+        '404':
+          $ref: '#/components/responses/TermNotFound'
+  /wp/v2/tags:
+    get:
+      tags: [Taxonomy]
+      operationId: listTags
+      summary: List post tags
+      description: Lists the post_tag taxonomy. Empty on 2026-08-04 (0 terms).
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Slug'
+      responses:
+        '200':
+          description: A page of tag terms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Term'
+  /wp/v2/users:
+    get:
+      tags: [Authors]
+      operationId: listAuthors
+      summary: List public content authors
+      description: >-
+        Lists the public author profiles attached to published content — two on 2026-08-04.
+        WordPress exposes only the public byline fields anonymously (name, slug, link, avatar);
+        email and role are not returned without authentication.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Slug'
+      responses:
+        '200':
+          description: A page of public author profiles
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+  /wp/v2/users/{id}:
+    get:
+      tags: [Authors]
+      operationId: getAuthor
+      summary: Get a public author profile by ID
+      parameters:
+        - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A single public author profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/comments:
+    get:
+      tags: [Content]
+      operationId: listComments
+      summary: List approved comments
+      description: Lists approved comments. Empty on 2026-08-04 (0 items); commenting is not used on this site.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A page of approved comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /wp/v2/events:
+    get:
+      tags: [Content]
+      operationId: listEvents
+      summary: List events
+      description: >-
+        Lists items of the site's custom `events` post type, registered via Custom Post Type UI.
+        The route is registered and answers anonymously but the collection was empty on
+        2026-08-04 (0 items).
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Search'
+        - $ref: '#/components/parameters/Slug'
+      responses:
+        '200':
+          description: A page of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+  /wp/v2/types:
+    get:
+      tags: [Discovery]
+      operationId: listContentTypes
+      summary: List registered content types
+      description: >-
+        Returns the 12 registered post types and their REST bases — post, page, attachment,
+        nav_menu_item, wp_block, wp_template, wp_template_part, wp_global_styles,
+        wp_navigation, wp_font_family, wp_font_face and the custom `events` type.
+      responses:
+        '200':
+          description: Map of content types keyed by slug
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/ContentType'
+  /wp/v2/types/{type}:
+    get:
+      tags: [Discovery]
+      operationId: getContentType
+      summary: Get a registered content type
+      parameters:
+        - name: type
+          in: path
+          required: true
+          description: Content type slug, e.g. `post`.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single content type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentType'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/taxonomies:
+    get:
+      tags: [Discovery]
+      operationId: listTaxonomies
+      summary: List registered taxonomies
+      responses:
+        '200':
+          description: Map of taxonomies keyed by slug
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /wp/v2/taxonomies/{taxonomy}:
+    get:
+      tags: [Discovery]
+      operationId: getTaxonomy
+      summary: Get a registered taxonomy
+      parameters:
+        - name: taxonomy
+          in: path
+          required: true
+          description: Taxonomy slug, e.g. `category`.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single taxonomy
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/statuses:
+    get:
+      tags: [Discovery]
+      operationId: listPostStatuses
+      summary: List post statuses visible anonymously
+      responses:
+        '200':
+          description: Map of statuses keyed by slug
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+  /wp/v2/statuses/{status}:
+    get:
+      tags: [Discovery]
+      operationId: getPostStatus
+      summary: Get a post status
+      parameters:
+        - name: status
+          in: path
+          required: true
+          description: Status slug, e.g. `publish`.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single post status
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/blocks:
+    get:
+      tags: [Content]
+      operationId: listReusableBlocks
+      summary: List reusable block patterns
+      description: Lists reusable blocks. Empty on 2026-08-04 (0 items).
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A page of reusable blocks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /wp/v2/navigation:
+    get:
+      tags: [Content]
+      operationId: listNavigationMenus
+      summary: List block-editor navigation menus
+      description: >-
+        Lists `wp_navigation` items. Empty on 2026-08-04 (0 items); note that the classic
+        `wp/v2/menu-items` route returns 401 anonymously.
+      parameters:
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A page of navigation menus
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /oembed/1.0/embed:
+    get:
+      tags: [oEmbed]
+      operationId: getOembed
+      summary: Get an oEmbed response for a jenavalve.com URL
+      description: >-
+        oEmbed provider endpoint. Returns provider/author metadata and an embeddable HTML
+        fragment for any URL on jenavalve.com.
+      parameters:
+        - name: url
+          in: query
+          required: true
+          description: The jenavalve.com URL to embed.
+          schema:
+            type: string
+            format: uri
+        - name: format
+          in: query
+          description: Response format.
+          schema:
+            type: string
+            enum: [json, xml]
+            default: json
+        - name: maxwidth
+          in: query
+          description: Maximum embed width in pixels.
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: oEmbed document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Oembed'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  headers:
+    XWPTotal:
+      description: Total number of items in the unpaginated collection.
+      schema:
+        type: integer
+    XWPTotalPages:
+      description: Total number of pages available at the current per_page size.
+      schema:
+        type: integer
+    LinkPagination:
+      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
+      schema:
+        type: string
+  parameters:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Unique numeric identifier for the object.
+      schema:
+        type: integer
+    Page:
+      name: page
+      in: query
+      description: One-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PerPage:
+      name: per_page
+      in: query
+      description: >-
+        Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400
+        `rest_invalid_param`.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a free-text string.
+      schema:
+        type: string
+    Slug:
+      name: slug
+      in: query
+      description: Limit results to objects with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
+    OrderBy:
+      name: orderby
+      in: query
+      description: Sort collection by object attribute.
+      schema:
+        type: string
+        enum: [date, id, include, modified, relevance, slug, title]
+    Order:
+      name: order
+      in: query
+      description: Sort direction.
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: desc
+    Fields:
+      name: _fields
+      in: query
+      description: >-
+        Sparse fieldset — comma-separated list of top-level fields to include in the response.
+      schema:
+        type: string
+  responses:
+    InvalidParam:
+      description: A query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_invalid_param
+            message: 'Invalid parameter(s): per_page'
+            data:
+              status: 400
+    NotFound:
+      description: The requested object does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InvalidPostId:
+      description: No object exists with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_post_invalid_id
+            message: Invalid post ID.
+            data:
+              status: 404
+    TermNotFound:
+      description: No taxonomy term exists with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      description: >-
+        The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as
+        `application/json` with a bespoke `{code, message, data.status}` shape.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on `rest_invalid_param`.
+      required: [code, message]
+    Rendered:
+      type: object
+      description: A rendered HTML field.
+      properties:
+        rendered:
+          type: string
+        protected:
+          type: boolean
+    ApiIndex:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        url:
+          type: string
+          format: uri
+        home:
+          type: string
+          format: uri
+        gmt_offset:
+          type: number
+        timezone_string:
+          type: string
+        namespaces:
+          type: array
+          items:
+            type: string
+        authentication:
+          type: object
+          description: >-
+            Supported authentication mechanisms. This site advertises WordPress application
+            passwords, authorized at /wp-admin/authorize-application.php.
+        routes:
+          type: object
+          description: Map of every registered route to its methods, args and endpoints.
+        site_logo:
+          type: integer
+        site_icon:
+          type: integer
+        site_icon_url:
+          type: string
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        date_gmt:
+          type: string
+          format: date-time
+        guid:
+          $ref: '#/components/schemas/Rendered'
+        modified:
+          type: string
+          format: date-time
+        modified_gmt:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/Rendered'
+        content:
+          $ref: '#/components/schemas/Rendered'
+        excerpt:
+          $ref: '#/components/schemas/Rendered'
+        author:
+          type: integer
+          description: ID of the authoring user; resolve via getAuthor.
+        featured_media:
+          type: integer
+          description: ID of the featured media item; resolve via getMediaItem.
+        comment_status:
+          type: string
+        ping_status:
+          type: string
+        sticky:
+          type: boolean
+        template:
+          type: string
+        format:
+          type: string
+        meta:
+          type: object
+        categories:
+          type: array
+          description: Category term IDs; resolve via getCategory.
+          items:
+            type: integer
+        tags:
+          type: array
+          items:
+            type: integer
+        class_list:
+          type: array
+          items:
+            type: string
+        acf:
+          type: object
+          description: Advanced Custom Fields payload attached to the post.
+        _links:
+          type: object
+          description: HAL-style link relations to author, media, terms and self.
+      required: [id, slug, link, title]
+    Page:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/Rendered'
+        content:
+          $ref: '#/components/schemas/Rendered'
+        excerpt:
+          $ref: '#/components/schemas/Rendered'
+        author:
+          type: integer
+        featured_media:
+          type: integer
+        parent:
+          type: integer
+          description: ID of the parent page, or 0 for a top-level page.
+        menu_order:
+          type: integer
+        template:
+          type: string
+        meta:
+          type: object
+        acf:
+          type: object
+        _links:
+          type: object
+      required: [id, slug, link, title]
+    MediaItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/Rendered'
+        author:
+          type: integer
+        description:
+          $ref: '#/components/schemas/Rendered'
+        caption:
+          $ref: '#/components/schemas/Rendered'
+        alt_text:
+          type: string
+        media_type:
+          type: string
+        mime_type:
+          type: string
+        media_details:
+          type: object
+          description: Width, height, file name and generated size renditions.
+        post:
+          type: integer
+          description: ID of the post or page this item is attached to.
+        source_url:
+          type: string
+          format: uri
+          description: Direct URL to the uploaded file.
+        filename:
+          type: string
+        filesize:
+          type: integer
+        _links:
+          type: object
+      required: [id, source_url, mime_type]
+    Term:
+      type: object
+      properties:
+        id:
+          type: integer
+        count:
+          type: integer
+          description: Number of published objects assigned this term.
+        description:
+          type: string
+        link:
+          type: string
+          format: uri
+        name:
+          type: string
+        slug:
+          type: string
+        taxonomy:
+          type: string
+        parent:
+          type: integer
+        meta:
+          type: object
+        _links:
+          type: object
+      required: [id, name, slug, taxonomy]
+    Author:
+      type: object
+      description: >-
+        Public author byline. Only the fields WordPress exposes anonymously are present —
+        no email address and no role are returned without authentication.
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        url:
+          type: string
+        description:
+          type: string
+        link:
+          type: string
+          format: uri
+        slug:
+          type: string
+        avatar_urls:
+          type: object
+          description: Gravatar URLs keyed by pixel size.
+        meta:
+          type: object
+        acf:
+          type: object
+        _links:
+          type: object
+      required: [id, name, slug]
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        type:
+          type: string
+        subtype:
+          type: string
+          description: The underlying post type, e.g. `post` or `page`.
+        _links:
+          type: object
+      required: [id, title, url, type]
+    ContentType:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        hierarchical:
+          type: boolean
+        has_archive:
+          type: boolean
+        icon:
+          type: string
+        taxonomies:
+          type: array
+          items:
+            type: string
+        rest_base:
+          type: string
+        rest_namespace:
+          type: string
+        _links:
+          type: object
+    Oembed:
+      type: object
+      properties:
+        version:
+          type: string
+        provider_name:
+          type: string
+        provider_url:
+          type: string
+          format: uri
+        author_name:
+          type: string
+        author_url:
+          type: string
+          format: uri
+        title:
+          type: string
+        type:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+        html:
+          type: string

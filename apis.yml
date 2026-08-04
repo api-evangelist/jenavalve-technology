@@ -1,18 +1,121 @@
 aid: jenavalve-technology
 name: JenaValve Technology
-description: 'JenaValve Technology is a company surfaced via the API Evangelist harvest backlog (source:
-  secondary-market) and added to the network as a stub for full-pipeline profiling.'
+description: 'JenaValve Technology, Inc. is a privately held medical-device company headquartered
+  at 4 Cromwell, Irvine, California, with an EU headquarters in the Central Tower, Landsberger
+  Str. 110, Munich and a UK office at Unit 9A Astley Way, Swillington, Leeds. Founded in 2006 on
+  a concept developed in 1995 by Professors Hans Figulla and Markus Ferrari, it develops the
+  Trilogy Heart Valve System, a transcatheter aortic valve replacement (TAVR) device purpose-built
+  for the minimally invasive treatment of severe aortic regurgitation (AR) as well as aortic
+  stenosis (AS), delivered transfemorally and transapically with a porcine pericardial valve. The
+  system carries a CE mark and is an investigational device in the United States, supported by the
+  ALIGN-AR and ARTIST clinical studies and the JENA-VAD registry. The company has raised roughly
+  $364 million across 13 rounds from investors including Bain Capital Life Sciences, the Qatar
+  Investment Authority, Pictet Alternative Advisors, Innovatus Capital Partners and Peijia Medical.
+  JenaValve operates no developer API programme — there is no developer portal, no API
+  documentation, no keys, no SDKs, no CLI, no MCP server, no agent card, no changelog and no status
+  page, and no developer, api, docs, status or trust subdomain resolves. Its two corporate
+  WordPress sites do each serve an anonymously readable REST API, and on both of them the standard
+  content collections are wide open while the administrative routes are correctly locked to 401.'
+image: https://jenavalve.com/wp-content/uploads/cropped-jvicon.png
 url: https://raw.githubusercontent.com/api-evangelist/jenavalve-technology/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment-pipeline-2026-08-04
+x-sector: medical-devices
+x-api-posture: no-product-api
 specificationVersion: '0.20'
 created: '2026-08-04'
 modified: '2026-08-04'
 tags:
 - Company
-apis: []
+- Medical Devices
+- Healthcare
+- Cardiology
+- Structural Heart
+- TAVR
+- Aortic Regurgitation
+- Aortic Stenosis
+- Heart Valves
+- Clinical Trials
+- Patient Education
+- Private Company
+apis:
+- name: JenaValve Site API (WordPress REST)
+  description: 'Anonymously readable REST surface served by jenavalve.com at /wp-json — 242 routes
+    across 12 namespaces. The standard WordPress content collections all answer without
+    credentials: 38 news posts (segmented by a four-term category taxonomy of press, videos,
+    experts and uncategorized), 18 pages covering the Trilogy System, investors, careers and the
+    ALIGN-AR / ARTIST / JENA-VAD clinical study pages, 137 media items including the Trilogy
+    product brochure and the 2026 reimbursement guide, a cross-type site search, two public author
+    bylines, and the oEmbed provider endpoint. Administrative routes are correctly closed —
+    wp/v2/settings, wp/v2/block-types, wp/v2/menu-items, wp-site-health/v1, wp-abilities/v1/abilities
+    and the CookieYes settings routes all return 401, and the Contact Form 7 routes return 403. A
+    custom events post type is registered but empty. This is an incidental CMS surface, not an API
+    product: JenaValve publishes no documentation, keys, SDKs, support channel, rate-limit policy,
+    status page or terms of use for it.'
+  humanURL: https://jenavalve.com/news/
+  baseURL: https://jenavalve.com/wp-json
+  tags:
+  - Content
+  - News
+  - Media
+  - Site Search
+  - WordPress
+  - CMS
+  properties:
+  - type: OpenAPI
+    url: openapi/jenavalve-technology-site-openapi.yml
+  - type: Overlay
+    url: overlays/jenavalve-technology-site-overlay.yaml
+  - type: Authentication
+    url: authentication/jenavalve-technology-authentication.yml
+  - type: Conventions
+    url: conventions/jenavalve-technology-conventions.yml
+  - type: ErrorCatalog
+    url: errors/jenavalve-technology-problem-types.yml
+  - type: DataModel
+    url: data-model/jenavalve-technology-data-model.yml
+  - type: Conformance
+    url: conformance/jenavalve-technology-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/jenavalve-technology-lifecycle.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+- name: JenaValve Discover AR Site API (WordPress REST)
+  description: 'Anonymously readable REST surface served by discover-ar.com at /wp-json — 197 routes
+    across 8 namespaces. Discover AR is JenaValve''s aortic-regurgitation education site, linked
+    from the jenavalve.com navigation as "Resources". Its one genuinely editorial signal is a
+    purpose-built category taxonomy that segments a 13-item education library by media format —
+    articles (4), videos (6), audio (3) and presentations (0) — making the library retrievable by
+    format without scraping HTML. Also anonymous: 9 pages, 63 media items, cross-type site search,
+    oEmbed, and the Yoast SEO get_head endpoint, which returns rendered head metadata including
+    schema.org JSON-LD for any URL on the site. wp/v2/settings returns 401. As with the main site
+    this is an incidental CMS surface with no published documentation, keys or support.'
+  humanURL: https://discover-ar.com/resources/
+  baseURL: https://discover-ar.com/wp-json
+  tags:
+  - Content
+  - Patient Education
+  - Media
+  - Site Search
+  - SEO
+  - WordPress
+  properties:
+  - type: OpenAPI
+    url: openapi/jenavalve-technology-discover-ar-openapi.yml
+  - type: Overlay
+    url: overlays/jenavalve-technology-discover-ar-overlay.yaml
+  - type: Authentication
+    url: authentication/jenavalve-technology-authentication.yml
+  - type: Conventions
+    url: conventions/jenavalve-technology-conventions.yml
+  - type: ErrorCatalog
+    url: errors/jenavalve-technology-problem-types.yml
+  - type: DataModel
+    url: data-model/jenavalve-technology-data-model.yml
+  - type: Conformance
+    url: conformance/jenavalve-technology-conformance.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +123,88 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
+  url: https://jenavalve.com/
+- type: About
+  url: https://jenavalve.com/about-us/
+- type: Blog
+  url: https://jenavalve.com/news/
+- type: News
+  url: https://jenavalve.com/news/
+- type: Support
+  url: https://jenavalve.com/contact/
+- type: Contact
+  url: https://jenavalve.com/contact/
+- type: Careers
+  url: https://jenavalve.com/careers/
+- type: Investors
+  url: https://jenavalve.com/investors/
+- type: Product
+  url: https://jenavalve.com/trilogy-system/
+- type: Documentation
+  url: https://eifu.jenavalve.com/
+- type: Resources
+  url: https://discover-ar.com/
+- type: ClinicalTrials
+  url: https://jenavalve.com/align-ar/
+- type: TermsOfService
+  url: https://jenavalve.com/terms-of-use/
+- type: PrivacyPolicy
+  url: https://jenavalve.com/privacy-policy/
+- type: CodeOfConduct
+  url: https://jenavalve.com/integrity-and-compliance/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/jenavalve
+- type: SecondaryMarket
   url: https://forgeglobal.com/jenavalve-technology_stock/
+- type: WellKnown
+  url: well-known/jenavalve-technology-well-known.yml
+- type: DomainSecurity
+  url: security/jenavalve-technology-domain-security.yml
+- type: Authentication
+  url: authentication/jenavalve-technology-authentication.yml
+- type: Conventions
+  url: conventions/jenavalve-technology-conventions.yml
+- type: Conformance
+  url: conformance/jenavalve-technology-conformance.yml
+- type: Lifecycle
+  url: lifecycle/jenavalve-technology-lifecycle.yml
+- type: DataModel
+  url: data-model/jenavalve-technology-data-model.yml
+- type: ErrorCatalog
+  url: errors/jenavalve-technology-problem-types.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/jenavalve-technology-llms.txt
+x-enrichment:
+  date: '2026-08-04'
+  status: enriched
+  artifacts_added: 15
+  pass: local-v1
+  notes: >-
+    No product API. Contract discovery probed jenavalve.com, discover-ar.com and
+    eifu.jenavalve.com for OpenAPI on each host root, GraphQL, MCP tools/list, A2A agent cards at
+    both the canonical and legacy well-known paths, and the full /.well-known/ set — every one
+    404 on the two WordPress hosts. eifu.jenavalve.com is a Next.js SPA on the third-party
+    ifucare.io platform whose catch-all answers 200 with an identical 2,454-byte HTML shell for
+    every path including both agent-card paths; those were recorded as false positives, not hits,
+    and no agent card was written. The real machine-readable contracts are the two anonymous
+    WordPress REST APIs — jenavalve.com/wp-json (12 namespaces, 242 routes) and
+    discover-ar.com/wp-json (8 namespaces, 197 routes). Their access posture is the inverse of
+    the hardened WordPress pattern: every standard wp/v2 content collection is wide open
+    anonymously while the administrative routes correctly 401 (wp/v2/settings, block-types,
+    menu-items, wp-abilities, wp-site-health, CookieYes) and Contact Form 7 403s. Two OpenAPI 3.1
+    documents were derived from the route indexes plus direct probing of every described
+    operation — 24 verified anonymous operations on the main site, 18 on Discover AR. The one
+    genuinely editorial signal across both is Discover AR's category taxonomy, which segments the
+    aortic-regurgitation education library by media format (articles 4, videos 6, audio 3,
+    presentations 0). Searched and found no VDP, no bug bounty, no trust center, no named
+    security or privacy certification, no GitHub org, no packages, no CLI, no MCP server, no
+    changelog, no status page, no webhook or event surface, and no developer/api/docs/status/trust
+    subdomain resolving. Those artifacts were deliberately not written rather than stubbed. Domain
+    security probe found TLS 1.3 on both hosts but no HSTS, no DNSSEC and no CAA on either, DMARC
+    at p=none on jenavalve.com and no DMARC at all on discover-ar.com. No idempotency contract
+    exists, so no Idempotency pointer was emitted; likewise no StatusPage, Deprecation, Security,
+    Compliance, SDKs, Postman, MCPServer, Webhooks or AgentCard pointer, because none of those
+    things exist. The Integrity and Compliance page is a Code of Conduct plus an EthicsPoint
+    helpline with no named certification, so it is wired as CodeOfConduct rather than Compliance.

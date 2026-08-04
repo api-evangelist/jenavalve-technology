@@ -1,0 +1,128 @@
+generated: '2026-08-04'
+method: derived
+source: >-
+  Derived from the repo's OpenAPI files and observed responses; compliance claims searched on
+  jenavalve.com.
+scope: >-
+  Cross-cutting API and web standards only. This file makes no statement about JenaValve's
+  medical-device regulatory conformance (CE mark, FDA IDE/PMA, ISO 13485, EU MDR) — that is a
+  product-quality regime, not an API contract, and JenaValve publishes no certification detail
+  to score. See notes.medical_device below.
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: >-
+    Both spec files in openapi/ are OpenAPI 3.1.0 — but they were DERIVED by API Evangelist from
+    probing, not published by JenaValve. JenaValve itself publishes no OpenAPI.
+  published_by_provider: false
+- id: rest
+  conforms: true
+  evidence: Resource-oriented JSON over HTTP with correct GET semantics and status codes.
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors use the bespoke WordPress {code, message, data.status} envelope served as
+    application/json. No type URI, no instance, not application/problem+json.
+- id: rfc8288-web-linking
+  conforms: true
+  evidence: >-
+    Pagination emits a Link header with rel="next" / rel="prev" on collection responses.
+- id: hal
+  conforms: partial
+  evidence: >-
+    Objects carry a _links block with typed relations and a curie namespace
+    (https://api.w.org/), which is HAL-shaped, but the media type is application/json rather
+    than application/hal+json and embedded resources appear under _embedded only when ?_embed
+    is requested.
+- id: json-api
+  conforms: false
+  evidence: No data/attributes/relationships envelope; responses are bare arrays and objects.
+- id: oembed-1.0
+  conforms: true
+  evidence: >-
+    Both hosts implement the oEmbed 1.0 provider endpoint at /oembed/1.0/embed with json and
+    xml formats.
+- id: schema-org
+  conforms: true
+  evidence: >-
+    discover-ar.com emits schema.org JSON-LD in the head metadata returned by
+    yoast/v1/get_head (Yoast SEO v27.2). Not present as an API-level representation.
+- id: sitemaps-xml
+  conforms: true
+  evidence: >-
+    jenavalve.com serves the WordPress core sitemap index at /wp-sitemap.xml (posts, pages,
+    categories, users); discover-ar.com serves a Yoast sitemap referenced from /robots.txt.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 security scheme in either spec; no authorization server exists.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every host.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: >-
+    /.well-known/security.txt returns 404 on jenavalve.com and discover-ar.com. See
+    well-known/jenavalve-technology-well-known.yml.
+- id: rfc8615-well-known
+  conforms: false
+  evidence: No /.well-known/ document of any kind is published on any host.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header observed; no deprecation policy published.
+- id: ratelimit-headers
+  conforms: false
+  evidence: >-
+    No RateLimit, RateLimit-Policy or X-RateLimit-* header observed on any response from either
+    host.
+- id: http-strict-transport-security
+  conforms: false
+  evidence: >-
+    Neither jenavalve.com nor discover-ar.com sets Strict-Transport-Security. Probed
+    2026-08-04; see security/jenavalve-technology-domain-security.yml.
+- id: dnssec
+  conforms: false
+  evidence: Not enabled on jenavalve.com or discover-ar.com.
+- id: caa
+  conforms: false
+  evidence: No CAA record published for either domain.
+- id: spf
+  conforms: true
+  evidence: SPF present on both jenavalve.com and discover-ar.com.
+- id: dmarc
+  conforms: partial
+  evidence: >-
+    jenavalve.com publishes DMARC at policy p=none (monitor only, no enforcement).
+    discover-ar.com publishes no DMARC record at all.
+- id: tls-1.3
+  conforms: true
+  evidence: Both hosts negotiate TLSv1.3.
+- id: mcp
+  conforms: false
+  evidence: No MCP server exists; no endpoint responded to tools/list.
+- id: a2a
+  conforms: false
+  evidence: >-
+    No agent card at /.well-known/agent-card.json or /.well-known/agent.json on any host. The
+    200 responses from eifu.jenavalve.com are SPA catch-all HTML, not agent cards.
+- id: llms-txt
+  conforms: false
+  evidence: /llms.txt returns 404 on both WordPress hosts.
+- id: asyncapi
+  conforms: not-applicable
+  evidence: >-
+    No event, streaming or webhook surface exists to describe. Not a gap — there is nothing to
+    specify.
+notes:
+  medical_device: >-
+    JenaValve's Trilogy System carries a CE mark and is under FDA investigational device
+    exemption in the United States, and the company runs a published Integrity and Compliance
+    programme with a Code of Conduct and an EthicsPoint reporting helpline (US 1-844-539-2348,
+    DE 0800 1821686, UK 0-800-89-0011). None of that is an API or information-security
+    certification: no SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP attestation is published
+    anywhere on the company's public surface, no trust centre exists, and no compliance
+    documentation is offered for download. For that reason no Compliance or TrustCenter pointer
+    is emitted for this provider — the Integrity and Compliance page is wired as CodeOfConduct,
+    which is what it actually is.
+  provider_published_specs: >-
+    JenaValve publishes zero machine-readable API artifacts. Everything in openapi/ was derived
+    by probing and is labelled as such in each spec's info block.

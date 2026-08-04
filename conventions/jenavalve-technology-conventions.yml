@@ -1,0 +1,126 @@
+generated: '2026-08-04'
+method: probed
+source: >-
+  Observed response headers and bodies from https://jenavalve.com/wp-json and
+  https://discover-ar.com/wp-json, 2026-08-04.
+applies_to:
+- openapi/jenavalve-technology-site-openapi.yml
+- openapi/jenavalve-technology-discover-ar-openapi.yml
+note: >-
+  These are the conventions of the WordPress REST API as deployed on JenaValve's two sites, not
+  conventions JenaValve authored or documents. JenaValve publishes no API guidance of any kind,
+  so everything below was established by observation. An agent integrating against these hosts
+  should treat every one of these as an undocumented implementation detail that can change
+  without notice — there is no versioning policy, no changelog and no deprecation contract.
+authentication:
+  style: none
+  detail: >-
+    No credential required for any described operation. See
+    authentication/jenavalve-technology-authentication.yml.
+idempotency:
+  supported: false
+  detail: >-
+    No idempotency contract exists. The surface exposes no anonymous write operation and
+    advertises no Idempotency-Key header or equivalent. Read operations are naturally
+    idempotent by HTTP semantics, which is not the same thing as an idempotency contract, so no
+    Idempotency pointer is emitted for this provider.
+pagination:
+  style: page-number
+  params:
+  - name: page
+    default: 1
+    description: One-based page index.
+  - name: per_page
+    default: 10
+    maximum: 100
+    description: >-
+      Items per page. Exceeding 100 is a hard error — per_page=200 returns HTTP 400
+      rest_invalid_param rather than clamping.
+  response_headers:
+  - name: X-WP-Total
+    description: Total items in the unpaginated collection.
+  - name: X-WP-TotalPages
+    description: Total pages at the current per_page size.
+  - name: Link
+    description: >-
+      RFC 8288 Link header carrying rel="next" and rel="prev". Both X-WP-Total and
+      X-WP-TotalPages are named in Access-Control-Expose-Headers, so they are readable from a
+      browser context cross-origin.
+  detail: >-
+    Counts live only in headers, never in the body — the body is a bare JSON array. An agent
+    that reads only the body cannot tell how much data remains.
+sparse_fields:
+  supported: true
+  param: _fields
+  detail: >-
+    Comma-separated list of top-level fields to return, e.g.
+    ?_fields=id,slug,link. The single most effective way to cut payload size on these hosts,
+    where a full post object carries rendered HTML content.
+embedding:
+  supported: true
+  param: _embed
+  detail: >-
+    WordPress supports ?_embed to inline linked resources (author, featured media, terms) into
+    an _embedded block, avoiding follow-up requests against the relations in _links.
+filtering:
+  detail: >-
+    Collections accept search, slug, include, exclude, orderby, order and offset. Posts
+    additionally accept categories, tags, after and before (ISO 8601). Media accepts media_type
+    and mime_type. See the OpenAPI files for the per-operation parameter sets that were
+    verified.
+hypermedia:
+  style: HAL-like
+  detail: >-
+    Every object carries a _links object with self, collection, about, author, replies,
+    wp:featuredmedia, wp:attachment and wp:term relations, using the
+    https://api.w.org/ curie namespace. Relations marked embeddable:true can be inlined with
+    _embed.
+error_envelope:
+  format: wordpress-rest
+  rfc9457: false
+  media_type: application/json
+  shape: '{ "code": "<slug>", "message": "<human text>", "data": { "status": <int> } }'
+  detail: >-
+    Not RFC 9457 problem+json — the response is served as application/json with a bespoke
+    envelope, and the HTTP status is duplicated inside data.status. Validation failures add
+    data.params, a map of parameter name to message. See
+    errors/jenavalve-technology-problem-types.yml.
+versioning:
+  scheme: uri-path-namespace
+  current: wp/v2
+  detail: >-
+    Version lives in the namespace segment of the path (wp/v2, oembed/1.0, yoast/v1). This is
+    the WordPress core convention; JenaValve publishes no versioning policy of its own and has
+    made no version commitment.
+  policy_url: null
+rate_limiting:
+  signalled: false
+  detail: >-
+    No RateLimit, RateLimit-Policy, X-RateLimit-* or Retry-After header was observed on any
+    response from either host, and no rate-limit policy is published. Absence of a signal is
+    not a guarantee of absence of a limit — an origin or CDN limit may exist unannounced, so an
+    agent should still back off on 429 and 5xx.
+request_tracing:
+  supported: false
+  detail: No request-id or correlation-id header is returned on either host.
+caching:
+  detail: >-
+    No Cache-Control, ETag or Last-Modified header was observed on the JSON responses. Both
+    hosts set X-Content-Type-Options: nosniff and X-Robots-Tag: noindex on the REST surface, and
+    both set a first-party `accessed` cookie on the API response, which an agent should ignore.
+cors:
+  detail: >-
+    Access-Control-Expose-Headers advertises X-WP-Total, X-WP-TotalPages and Link.
+    Access-Control-Allow-Headers advertises Authorization, X-WP-Nonce, Content-Disposition,
+    Content-MD5 and Content-Type. Responses carry Vary: Origin.
+content_negotiation:
+  detail: >-
+    application/json; charset=UTF-8 only. The oEmbed endpoint additionally accepts ?format=xml.
+    Text fields are returned as { "rendered": "<html>" } objects containing rendered HTML, not
+    plain text — an agent must strip markup itself.
+cross_links:
+  errors: errors/jenavalve-technology-problem-types.yml
+  authentication: authentication/jenavalve-technology-authentication.yml
+  lifecycle: lifecycle/jenavalve-technology-lifecycle.yml
+  data_model: data-model/jenavalve-technology-data-model.yml
+  conformance: conformance/jenavalve-technology-conformance.yml

@@ -1,0 +1,104 @@
+generated: '2026-08-04'
+method: probed
+source: >-
+  Anonymous probing of https://jenavalve.com/wp-json and https://discover-ar.com/wp-json plus
+  the `authentication` block of the WordPress route-discovery document.
+summary:
+  types: [none, http]
+  anonymous_read: true
+  api_key_in: []
+  oauth2_flows: []
+  note: >-
+    JenaValve publishes no API authentication scheme because it publishes no API programme.
+    There is no key issuance, no client registration, no OAuth authorization server, no OIDC
+    discovery document and no developer account of any kind. Every operation described in this
+    repo's OpenAPI files is reachable with NO credential at all. The only authentication
+    mechanism either site advertises is WordPress application passwords, which is a CMS-author
+    mechanism for the site's own two editors — not a consumer-facing API credential, and not
+    obtainable by a third party.
+schemes:
+- name: anonymous
+  type: none
+  description: >-
+    The default and only posture for third parties. All described content operations —
+    posts, pages, media, categories, tags, users, comments, search, types, taxonomies,
+    statuses, blocks, navigation, oEmbed and the Yoast head endpoint — return HTTP 200 with no
+    Authorization header.
+  sources:
+  - openapi/jenavalve-technology-site-openapi.yml
+  - openapi/jenavalve-technology-discover-ar-openapi.yml
+- name: application-passwords
+  type: http
+  scheme: basic
+  description: >-
+    WordPress application passwords, advertised in the /wp-json discovery document on
+    jenavalve.com with an authorization endpoint at /wp-admin/authorize-application.php. This
+    is an internal CMS-author credential issued only to the site's own WordPress users; it is
+    NOT a public API credential and no third party can obtain one. Recorded because the site
+    advertises it, not because it is available.
+  authorization_endpoint: https://jenavalve.com/wp-admin/authorize-application.php
+  audience: site-editors-only
+  third_party_obtainable: false
+  sources:
+  - https://jenavalve.com/wp-json
+access_posture:
+  description: >-
+    Both sites split cleanly between wide-open content routes and correctly locked
+    administrative routes. Unlike some WordPress deployments hardened by a security plugin,
+    nothing here 401s the standard content collections — the anonymous reader gets the full
+    published corpus.
+  anonymous_200:
+  - wp/v2/posts
+  - wp/v2/pages
+  - wp/v2/media
+  - wp/v2/categories
+  - wp/v2/tags
+  - wp/v2/users
+  - wp/v2/comments
+  - wp/v2/search
+  - wp/v2/types
+  - wp/v2/taxonomies
+  - wp/v2/statuses
+  - wp/v2/blocks
+  - wp/v2/navigation
+  - wp/v2/events
+  - oembed/1.0/embed
+  - yoast/v1/get_head (discover-ar.com only)
+  denied:
+  - route: wp/v2/settings
+    status: 401
+    code: rest_forbidden
+  - route: wp/v2/block-types
+    status: 401
+    code: rest_block_type_cannot_view
+  - route: wp/v2/menu-items
+    status: 401
+    code: rest_cannot_view
+  - route: wp-abilities/v1/abilities
+    status: 401
+    code: rest_forbidden
+  - route: wp-site-health/v1/tests/background-updates
+    status: 401
+    code: rest_forbidden
+  - route: cky/v1/settings
+    status: 401
+    code: cookieyes_rest_cannot_view
+  - route: contact-form-7/v1/contact-forms
+    status: 403
+    code: wpcf7_forbidden
+observations:
+- id: no-hsts
+  note: >-
+    Neither jenavalve.com nor discover-ar.com sets Strict-Transport-Security, so a first request
+    over http:// is not protected against downgrade. See
+    security/jenavalve-technology-domain-security.yml.
+- id: author-enumeration
+  note: >-
+    wp/v2/users answers anonymously and returns the site's two published author bylines. This is
+    WordPress default behaviour and returns only public byline fields — name, slug, link and
+    avatar — with no email address or role. It is noted as a standard hardening consideration,
+    not as a data exposure; no personal data is reproduced in this repo.
+- id: write-methods-untested
+  note: >-
+    Anonymous responses carry `Allow: GET`. No write method was ever attempted against either
+    host. The OpenAPI files therefore describe read operations only.

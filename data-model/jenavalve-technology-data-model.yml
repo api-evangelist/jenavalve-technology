@@ -1,0 +1,168 @@
+generated: '2026-08-04'
+method: derived
+source: >-
+  openapi/jenavalve-technology-site-openapi.yml and
+  openapi/jenavalve-technology-discover-ar-openapi.yml, plus the _links relations observed in
+  live responses.
+note: >-
+  The WordPress content graph as deployed on JenaValve's two sites. Relationships are carried by
+  bare integer id fields on the object plus a parallel _links block using the
+  https://api.w.org/ curie namespace; there are no nested objects, so every traversal is a
+  second request unless ?_embed is used.
+entities:
+- name: Post
+  description: >-
+    A news item on jenavalve.com (38 items) or an education library item on discover-ar.com
+    (13 items).
+  id_field: id
+  id_type: integer
+  collection: /wp/v2/posts
+  operations:
+    list: listPosts
+    get: getPost
+  key_fields: [id, slug, link, title, content, excerpt, date, modified, status]
+- name: Page
+  description: >-
+    A static site page — 18 on jenavalve.com (Trilogy System, About, Investors, Careers,
+    Contact, ALIGN-AR, ARTIST, JENA-VAD, legal pages), 9 on discover-ar.com.
+  id_field: id
+  id_type: integer
+  collection: /wp/v2/pages
+  operations:
+    list: listPages
+    get: getPage
+  key_fields: [id, slug, link, title, content, parent, menu_order]
+- name: MediaItem
+  description: >-
+    An uploaded file — 137 on jenavalve.com including the Trilogy product brochure PDF, the
+    2026 reimbursement guide and the labeling symbols glossary; 63 on discover-ar.com.
+  id_field: id
+  id_type: integer
+  collection: /wp/v2/media
+  operations:
+    list: listMedia
+    get: getMediaItem
+  key_fields: [id, source_url, mime_type, media_type, filesize, media_details, alt_text]
+- name: Term
+  description: >-
+    A taxonomy term. On jenavalve.com the category taxonomy has four terms (press 28, videos 10,
+    experts 0, uncategorized 0). On discover-ar.com it segments the education library by media
+    format (articles 4, videos 6, audio 3, presentations 0).
+  id_field: id
+  id_type: integer
+  collection: /wp/v2/categories
+  operations:
+    list: listCategories
+    get: getCategory
+  key_fields: [id, name, slug, taxonomy, count, parent, link]
+- name: Author
+  description: >-
+    A public content byline — two on jenavalve.com, one on discover-ar.com. Anonymous callers
+    receive only public fields; no email or role is exposed.
+  id_field: id
+  id_type: integer
+  collection: /wp/v2/users
+  operations:
+    list: listAuthors
+    get: getAuthor
+  key_fields: [id, name, slug, link, avatar_urls]
+- name: SearchResult
+  description: >-
+    A lightweight cross-type search hit. A projection, not a stored entity — it points back at
+    a Post or Page via id + subtype.
+  id_field: id
+  collection: /wp/v2/search
+  operations:
+    list: searchSite
+  key_fields: [id, title, url, type, subtype]
+- name: ContentType
+  description: >-
+    Registry entry describing a registered post type and its REST base. jenavalve.com registers
+    12 including a custom `events` type; discover-ar.com registers 11 with no custom type.
+  id_field: slug
+  id_type: string
+  collection: /wp/v2/types
+  operations:
+    list: listContentTypes
+    get: getContentType
+relationships:
+- from: Post
+  to: Author
+  cardinality: belongs_to
+  via: author
+  link_rel: author
+  note: Integer user ID. Resolve with getAuthor, or inline with ?_embed.
+- from: Post
+  to: MediaItem
+  cardinality: has_one
+  via: featured_media
+  link_rel: wp:featuredmedia
+  note: 0 means no featured image.
+- from: Post
+  to: Term
+  cardinality: has_many
+  via: categories
+  link_rel: wp:term
+  note: >-
+    Array of category term IDs. This is the primary segmentation of both content libraries —
+    press/videos on jenavalve.com, articles/videos/audio/presentations on discover-ar.com.
+- from: Post
+  to: Term
+  cardinality: has_many
+  via: tags
+  link_rel: wp:term
+  note: Present in the schema but empty on both sites (0 tag terms).
+- from: Page
+  to: Page
+  cardinality: belongs_to
+  via: parent
+  link_rel: up
+  note: 0 means a top-level page. Combined with menu_order this reconstructs site hierarchy.
+- from: Page
+  to: Author
+  cardinality: belongs_to
+  via: author
+  link_rel: author
+- from: Page
+  to: MediaItem
+  cardinality: has_one
+  via: featured_media
+  link_rel: wp:featuredmedia
+- from: MediaItem
+  to: Post
+  cardinality: belongs_to
+  via: post
+  link_rel: about
+  note: The post or page the file was uploaded to; 0 when unattached.
+- from: MediaItem
+  to: Author
+  cardinality: belongs_to
+  via: author
+  link_rel: author
+- from: Term
+  to: Term
+  cardinality: belongs_to
+  via: parent
+  link_rel: up
+  note: The category taxonomy is hierarchical but flat in practice on both sites (all parent 0).
+- from: SearchResult
+  to: Post
+  cardinality: belongs_to
+  via: id
+  note: Dereference by subtype — subtype `post` resolves via getPost, `page` via getPage.
+- from: ContentType
+  to: Term
+  cardinality: has_many
+  via: taxonomies
+  note: Slugs of the taxonomies registered against the type.
+id_conventions:
+  detail: >-
+    All ids are plain auto-increment integers with no prefix and no type discriminator, and the
+    id space is SHARED across post types — posts, pages, media and the custom events type all
+    draw from the same sequence. An integer id alone is therefore ambiguous; it is only
+    meaningful together with the collection it came from. The two sites are entirely separate
+    installations, so id 409 on discover-ar.com has no relationship to id 409 on jenavalve.com.
+traversal_note: >-
+  Every relationship above is a bare integer requiring a second request. Use ?_embed to inline
+  author, featured media and terms in one call, and ?_fields to keep the payload small — see
+  conventions/jenavalve-technology-conventions.yml.
