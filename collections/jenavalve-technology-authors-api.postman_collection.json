@@ -1,0 +1,305 @@
+{
+  "item": [
+    {
+      "id": "3ce8bf3f-edf9-4813-aac0-c9691f7e43d4",
+      "name": "Authors",
+      "description": {
+        "content": "Public author profiles attached to published content.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "46c22c6a-026e-4db8-915e-9cf1eeebc73b",
+          "name": "List public content authors",
+          "request": {
+            "name": "List public content authors",
+            "description": {
+              "content": "Lists the public author profiles attached to published content — two on 2026-08-04. WordPress exposes only the public byline fields anonymously (name, slug, link, avatar); email and role are not returned without authentication.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "One-based page of the collection to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "10",
+                  "description": "Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400 `rest_invalid_param`."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Limit results to those matching a free-text string."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit results to objects with one or more specific slugs."
+                },
+                {
+                  "disabled": false,
+                  "key": "slug",
+                  "value": "<string>",
+                  "description": "Limit results to objects with one or more specific slugs."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "653c773a-0564-4ac2-8d0e-8063b3569a41",
+              "name": "A page of public author profiles",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "10"
+                    },
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "slug",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Total number of items in the unpaginated collection.",
+                  "key": "X-WP-Total",
+                  "value": "4654"
+                },
+                {
+                  "disabled": false,
+                  "description": "Total number of pages available at the current per_page size.",
+                  "key": "X-WP-TotalPages",
+                  "value": "4654"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 4008,\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"url\": \"string\",\n    \"description\": \"string\",\n    \"link\": \"http://TycIYibonQQGtid.jfgNSLNYgqOv8I7E-BFC.nw-.VHB\",\n    \"avatar_urls\": {},\n    \"meta\": {},\n    \"acf\": {},\n    \"_links\": {}\n  },\n  {\n    \"id\": 3981,\n    \"name\": \"string\",\n    \"slug\": \"string\",\n    \"url\": \"string\",\n    \"description\": \"string\",\n    \"link\": \"http://JKfcImoEgRHThBHI.smhexDjKjjH0AqK5Rvfxzev-egwTJCIOs5DI\",\n    \"avatar_urls\": {},\n    \"meta\": {},\n    \"acf\": {},\n    \"_links\": {}\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a819bbdc-2fd3-4579-9540-b05582b1cf69",
+          "name": "Get a public author profile by ID",
+          "request": {
+            "name": "Get a public author profile by ID",
+            "description": {},
+            "url": {
+              "path": [
+                "wp",
+                "v2",
+                "users",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "id",
+                  "description": "(Required) Unique numeric identifier for the object."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e5a2723b-35ac-4531-8c9b-976d509a2dfa",
+              "name": "A single public author profile",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "users",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Unique numeric identifier for the object."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 7825,\n  \"name\": \"string\",\n  \"slug\": \"string\",\n  \"url\": \"string\",\n  \"description\": \"string\",\n  \"link\": \"http://VrOPstAjLTnfkykDn.vcmub6uwNilsMfBfT80ljBkp6g\",\n  \"avatar_urls\": {},\n  \"meta\": {},\n  \"acf\": {},\n  \"_links\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "550ba619-2287-4ffb-aab1-642ee1294a36",
+              "name": "The requested object does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wp",
+                    "v2",
+                    "users",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "id",
+                      "description": "(Required) Unique numeric identifier for the object."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"data\": {\n    \"status\": 384,\n    \"params\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://jenavalve.com/wp-json",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "16f109f5-ebf4-4796-b9ba-92af989b4e91",
+    "name": "JenaValve Site API (WordPress REST) Authors API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Derived, third-party OpenAPI description of the anonymously readable portion of the WordPress REST API served by the JenaValve corporate site at https://jenavalve.com/wp-json. JenaValve Technology publishes no developer API programme, no portal, no documentation and no keys; this is an incidental surface exposed by the site's CMS, described here because it is a real, machine-readable, publicly reachable contract.\nEvery operation below was individually probed anonymously on 2026-08-04 and returned HTTP 200. Routes that returned 401/403 anonymously (wp/v2/settings, wp/v2/block-types, wp/v2/menu-items, cky/v1/*, contact-form-7/v1/*, wp-site-health/v1/*, wp-abilities/v1/abilities) are deliberately NOT described here — see conformance/ and authentication/ for the full access-posture record. Write methods are not described: the surface answers `Allow: GET` anonymously and no write was ever attempted.\n\nContact Support:\n Name: JenaValve Technology",
+      "type": "text/plain"
+    }
+  }
+}

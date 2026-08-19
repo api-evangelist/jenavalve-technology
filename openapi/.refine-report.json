@@ -1,0 +1,35 @@
+{
+  "provider": "jenavalve-technology",
+  "sources": [
+    "jenavalve-technology-authors-api-openapi.yml",
+    "jenavalve-technology-content-api-openapi.yml",
+    "jenavalve-technology-discovery-api-openapi.yml",
+    "jenavalve-technology-media-api-openapi.yml",
+    "jenavalve-technology-oembed-api-openapi.yml",
+    "jenavalve-technology-seo-api-openapi.yml",
+    "jenavalve-technology-taxonomy-api-openapi.yml"
+  ],
+  "outputs": [
+    "jenavalve-technology-authors-api-openapi.yml",
+    "jenavalve-technology-content-api-openapi.yml",
+    "jenavalve-technology-discovery-api-openapi.yml",
+    "jenavalve-technology-media-api-openapi.yml",
+    "jenavalve-technology-oembed-api-openapi.yml",
+    "jenavalve-technology-seo-api-openapi.yml",
+    "jenavalve-technology-taxonomy-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "jenavalve-technology-authors-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "jenavalve-technology-content-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "jenavalve-technology-discovery-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "jenavalve-technology-media-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "jenavalve-technology-oembed-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "jenavalve-technology-seo-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "jenavalve-technology-taxonomy-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": []
+}

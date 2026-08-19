@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "JenaValve Discover AR Site API (WordPress REST) SEO API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "SEO",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Yoast SEO head metadata for a URL",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/yoast/v1/get_head",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query",
+                "description": "The discover-ar.com URL to describe."
+              }
+            ]
+          },
+          "docs": "Returns the rendered `<head>` SEO metadata block (title, meta description, canonical, Open Graph, Twitter card and schema.org JSON-LD) that Yoast SEO v27.2 emits for any discover-ar.com URL. Useful for retrieving structured metadata about an education library item without parsing the page."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

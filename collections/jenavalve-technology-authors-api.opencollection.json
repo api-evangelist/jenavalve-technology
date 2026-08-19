@@ -1,0 +1,74 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "JenaValve Site API (WordPress REST) Authors API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List public content authors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://jenavalve.com/wp-json/wp/v2/users",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400 `rest_invalid_param`."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a free-text string."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to objects with one or more specific slugs."
+              }
+            ]
+          },
+          "docs": "Lists the public author profiles attached to published content — two on 2026-08-04. WordPress exposes only the public byline fields anonymously (name, slug, link, avatar); email and role are not returned without authentication."
+        },
+        {
+          "info": {
+            "name": "Get a public author profile by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://jenavalve.com/wp-json/wp/v2/users/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique numeric identifier for the object."
+              }
+            ]
+          },
+          "docs": "Get a public author profile by ID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

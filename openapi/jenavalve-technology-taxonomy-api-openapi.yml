@@ -1,0 +1,219 @@
+openapi: 3.2.0
+info:
+  title: Jenavalve Technology Taxonomy API
+  version: '1.0'
+  contact:
+    name: JenaValve Technology
+    url: https://jenavalve.com/contact/
+  description: 'Operations tagged Taxonomy across 2 of this provider''s published API definitions: jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://discover-ar.com/wp-json
+  description: Discover AR WordPress REST API
+- url: https://jenavalve.com/wp-json
+  description: JenaValve corporate site WordPress REST API
+tags:
+- name: Taxonomy
+  description: The articles / videos / audio / presentations category taxonomy.
+paths:
+  /wp/v2/categories:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Taxonomy
+      operationId: listDiscoverArCategories
+      summary: List education-format categories
+      description: Lists the category taxonomy that segments the AR education library by media format — `articles` (id 12, 4 items), `videos` (id 13, 6), `audio` (id 15, 3), `presentations` (id 14, 0) and `uncategorized` (id 1, 0).
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Slug'
+      - name: hide_empty
+        in: query
+        description: Omit terms that have no assigned posts.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: A page of category terms
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Term'
+  /wp/v2/tags:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Taxonomy
+      operationId: listDiscoverArTags
+      summary: List post tags
+      description: Lists the post_tag taxonomy. Empty on 2026-08-04 (0 terms).
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A page of tag terms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Term'
+  /wp/v2/categories/{id}:
+    servers:
+    - url: https://jenavalve.com/wp-json
+      description: JenaValve corporate site WordPress REST API
+    get:
+      tags:
+      - Taxonomy
+      operationId: getCategory
+      summary: Get a category by ID
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A single category term
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Term_2'
+        '404':
+          $ref: '#/components/responses/TermNotFound'
+components:
+  parameters:
+    Slug:
+      name: slug
+      in: query
+      description: Limit results to objects with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Page:
+      name: page
+      in: query
+      description: One-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Unique numeric identifier for the object.
+      schema:
+        type: integer
+  schemas:
+    Term:
+      type: object
+      properties:
+        id:
+          type: integer
+        count:
+          type: integer
+        description:
+          type: string
+        link:
+          type: string
+          format: uri
+        name:
+          type: string
+        slug:
+          type: string
+        taxonomy:
+          type: string
+        parent:
+          type: integer
+        _links:
+          type: object
+      required:
+      - id
+      - name
+      - slug
+      - taxonomy
+    Term_2:
+      type: object
+      properties:
+        id:
+          type: integer
+        count:
+          type: integer
+          description: Number of published objects assigned this term.
+        description:
+          type: string
+        link:
+          type: string
+          format: uri
+        name:
+          type: string
+        slug:
+          type: string
+        taxonomy:
+          type: string
+        parent:
+          type: integer
+        meta:
+          type: object
+        _links:
+          type: object
+      required:
+      - id
+      - name
+      - slug
+      - taxonomy
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on `rest_invalid_param`.
+      required:
+      - code
+      - message
+  headers:
+    XWPTotal:
+      description: Total number of items in the unpaginated collection.
+      schema:
+        type: integer
+  responses:
+    TermNotFound:
+      description: No taxonomy term exists with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+x-refined-from:
+- jenavalve-technology-discover-ar-openapi.yml
+- jenavalve-technology-site-openapi.yml

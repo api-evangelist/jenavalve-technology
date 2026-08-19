@@ -1,0 +1,160 @@
+{
+  "item": [
+    {
+      "id": "93b212dc-df9b-416b-beed-4874335afccc",
+      "name": "SEO",
+      "description": {
+        "content": "Yoast SEO head-metadata endpoint.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "58db2f2e-6508-48ac-b655-971bf091689f",
+          "name": "Get Yoast SEO head metadata for a URL",
+          "request": {
+            "name": "Get Yoast SEO head metadata for a URL",
+            "description": {
+              "content": "Returns the rendered `<head>` SEO metadata block (title, meta description, canonical, Open Graph, Twitter card and schema.org JSON-LD) that Yoast SEO v27.2 emits for any discover-ar.com URL. Useful for retrieving structured metadata about an education library item without parsing the page.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "yoast",
+                "v1",
+                "get_head"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "url",
+                  "value": "<uri>",
+                  "description": "(Required) The discover-ar.com URL to describe."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b99ad0d2-7999-4533-a727-c8cfc61546a9",
+              "name": "Rendered head metadata",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "yoast",
+                    "v1",
+                    "get_head"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"html\": \"string\",\n  \"json\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "baf25588-849b-45d1-9cbb-f3d34f27e1b5",
+              "name": "The requested object does not exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "yoast",
+                    "v1",
+                    "get_head"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"data\": {\n    \"status\": 4464,\n    \"params\": {}\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://discover-ar.com/wp-json",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c9f24dff-6682-42da-8e61-76b0afc6c72e",
+    "name": "JenaValve Discover AR Site API (WordPress REST) SEO API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Derived, third-party OpenAPI description of the anonymously readable portion of the WordPress REST API served by Discover AR (https://discover-ar.com/wp-json), JenaValve Technology's aortic-regurgitation patient- and clinician-education site, linked from the jenavalve.com main navigation as \"Resources\".\nThe substantive content here is a small curated education library — 13 posts segmented by a purpose-built category taxonomy of `articles` (4), `videos` (6), `audio` (3) and `presentations` (0), plus 9 pages and 63 media items. That taxonomy is the one genuinely editorial signal on either JenaValve site: it makes the AR education library retrievable by media format without scraping HTML.\nEvery operation below was individually probed anonymously on 2026-08-04 and returned HTTP 200. `wp/v2/settings` returns 401 anonymously and is not described. Write methods are not described: the surface answers `Allow: GET` anonymously and no write was ever attempted.\n\nContact Support:\n Name: JenaValve Technology",
+      "type": "text/plain"
+    }
+  }
+}

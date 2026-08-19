@@ -1,0 +1,82 @@
+openapi: 3.2.0
+info:
+  title: Jenavalve Technology O Embed API
+  version: '1.0'
+  contact:
+    name: JenaValve Technology
+    url: https://jenavalve.com/contact/
+  description: 'Operations tagged oEmbed across 2 of this provider''s published API definitions: jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://discover-ar.com/wp-json
+  description: Discover AR WordPress REST API
+- url: https://jenavalve.com/wp-json
+  description: JenaValve corporate site WordPress REST API
+tags:
+- name: oEmbed
+  description: oEmbed provider endpoint for discover-ar.com URLs.
+paths:
+  /oembed/1.0/embed:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - oEmbed
+      operationId: getDiscoverArOembed
+      summary: Get an oEmbed response for a discover-ar.com URL
+      parameters:
+      - name: url
+        in: query
+        required: true
+        description: The discover-ar.com URL to embed.
+        schema:
+          type: string
+          format: uri
+      - name: format
+        in: query
+        description: Response format.
+        schema:
+          type: string
+          enum:
+          - json
+          - xml
+          default: json
+      responses:
+        '200':
+          description: oEmbed document
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    NotFound:
+      description: The requested object does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+            params:
+              type: object
+      required:
+      - code
+      - message
+x-refined-from:
+- jenavalve-technology-discover-ar-openapi.yml
+- jenavalve-technology-site-openapi.yml

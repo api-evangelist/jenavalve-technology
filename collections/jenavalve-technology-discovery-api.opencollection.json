@@ -1,0 +1,119 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jenavalve Technology Discovery API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Discovery",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the API index",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/"
+          },
+          "docs": "Returns the site's WordPress REST route-discovery document — site name, description, home URL, the 8 registered namespaces and the full 197-route index."
+        },
+        {
+          "info": {
+            "name": "List registered content types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/types"
+          },
+          "docs": "Returns the 11 registered post types and their REST bases. Unlike jenavalve.com this site registers no custom post type."
+        },
+        {
+          "info": {
+            "name": "List registered taxonomies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/taxonomies"
+          },
+          "docs": "List registered taxonomies"
+        },
+        {
+          "info": {
+            "name": "List post statuses visible anonymously",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/statuses"
+          },
+          "docs": "List post statuses visible anonymously"
+        },
+        {
+          "info": {
+            "name": "Get a registered content type",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/types/:type",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Content type slug, e.g. `post`."
+              }
+            ]
+          },
+          "docs": "Get a registered content type"
+        },
+        {
+          "info": {
+            "name": "Get a registered taxonomy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/taxonomies/:taxonomy",
+            "params": [
+              {
+                "name": "taxonomy",
+                "value": "",
+                "type": "path",
+                "description": "Taxonomy slug, e.g. `category`."
+              }
+            ]
+          },
+          "docs": "Get a registered taxonomy"
+        },
+        {
+          "info": {
+            "name": "Get a post status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/statuses/:status",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "path",
+                "description": "Status slug, e.g. `publish`."
+              }
+            ]
+          },
+          "docs": "Get a post status"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,553 @@
+openapi: 3.2.0
+info:
+  title: Jenavalve Technology Content API
+  version: '1.0'
+  contact:
+    name: JenaValve Technology
+    url: https://jenavalve.com/contact/
+  description: 'Operations tagged Content across 2 of this provider''s published API definitions: jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://discover-ar.com/wp-json
+  description: Discover AR WordPress REST API
+- url: https://jenavalve.com/wp-json
+  description: JenaValve corporate site WordPress REST API
+tags:
+- name: Content
+  description: The AR education library — posts, pages and site search.
+paths:
+  /wp/v2/posts:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Content
+      operationId: listDiscoverArPosts
+      summary: List AR education library items
+      description: Lists the published education library — 13 items on 2026-08-04. Filter by the `categories` parameter to segment by media format (articles, videos, audio, presentations). Total count is in `X-WP-Total`.
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/OrderBy'
+      - $ref: '#/components/parameters/Order'
+      - $ref: '#/components/parameters/Slug'
+      - $ref: '#/components/parameters/Fields'
+      - name: categories
+        in: query
+        description: Limit to posts in one or more category IDs — 12 articles, 13 videos, 15 audio, 14 presentations.
+        schema:
+          type: array
+          items:
+            type: integer
+      responses:
+        '200':
+          description: A page of education library items
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+            Link:
+              $ref: '#/components/headers/LinkPagination'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/posts/{id}:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Content
+      operationId: getDiscoverArPost
+      summary: Get an education library item by ID
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A single post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          $ref: '#/components/responses/InvalidPostId'
+  /wp/v2/pages:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Content
+      operationId: listDiscoverArPages
+      summary: List site pages
+      description: Lists published pages — 9 items on 2026-08-04.
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Slug'
+      - $ref: '#/components/parameters/Fields'
+      responses:
+        '200':
+          description: A page of pages
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+            Link:
+              $ref: '#/components/headers/LinkPagination'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/pages/{id}:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Content
+      operationId: getDiscoverArPage
+      summary: Get a page by ID
+      parameters:
+      - $ref: '#/components/parameters/Id'
+      responses:
+        '200':
+          description: A single page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          $ref: '#/components/responses/InvalidPostId'
+  /wp/v2/search:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Content
+      operationId: searchDiscoverAr
+      summary: Search AR education content
+      description: Cross-type site search over the AR education library, returning lightweight `{id, title, url, type, subtype}` hits.
+      parameters:
+      - name: search
+        in: query
+        required: true
+        description: Free-text query.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      - name: subtype
+        in: query
+        description: Restrict to a post subtype (e.g. post, page).
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Search hits
+          headers:
+            X-WP-Total:
+              $ref: '#/components/headers/XWPTotal'
+            X-WP-TotalPages:
+              $ref: '#/components/headers/XWPTotalPages'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+        '400':
+          $ref: '#/components/responses/InvalidParam'
+  /wp/v2/users:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Content
+      operationId: listDiscoverArAuthors
+      summary: List public content authors
+      description: Lists the public author profiles attached to published content — one on 2026-08-04. Only public byline fields are returned anonymously.
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A page of public author profiles
+          content:
+            application/json:
+              schema:
+                type: object
+  /wp/v2/blocks:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Content
+      operationId: listDiscoverArReusableBlocks
+      summary: List reusable block patterns
+      description: Lists reusable blocks. Empty on 2026-08-04 (0 items).
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A page of reusable blocks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /wp/v2/navigation:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Content
+      operationId: listDiscoverArNavigationMenus
+      summary: List block-editor navigation menus
+      description: Lists `wp_navigation` items. Empty on 2026-08-04 (0 items).
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          description: A page of navigation menus
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /wp/v2/comments:
+    servers:
+    - url: https://jenavalve.com/wp-json
+      description: JenaValve corporate site WordPress REST API
+    get:
+      tags:
+      - Content
+      operationId: listComments
+      summary: List approved comments
+      description: Lists approved comments. Empty on 2026-08-04 (0 items); commenting is not used on this site.
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage_2'
+      responses:
+        '200':
+          description: A page of approved comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+  /wp/v2/events:
+    servers:
+    - url: https://jenavalve.com/wp-json
+      description: JenaValve corporate site WordPress REST API
+    get:
+      tags:
+      - Content
+      operationId: listEvents
+      summary: List events
+      description: Lists items of the site's custom `events` post type, registered via Custom Post Type UI. The route is registered and answers anonymously but the collection was empty on 2026-08-04 (0 items).
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage_2'
+      - $ref: '#/components/parameters/Search'
+      - $ref: '#/components/parameters/Slug'
+      responses:
+        '200':
+          description: A page of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Page'
+components:
+  schemas:
+    Page:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/Rendered_2'
+        content:
+          $ref: '#/components/schemas/Rendered_2'
+        excerpt:
+          $ref: '#/components/schemas/Rendered_2'
+        author:
+          type: integer
+        featured_media:
+          type: integer
+        parent:
+          type: integer
+          description: ID of the parent page, or 0 for a top-level page.
+        menu_order:
+          type: integer
+        template:
+          type: string
+        meta:
+          type: object
+        acf:
+          type: object
+        _links:
+          type: object
+      required:
+      - id
+      - slug
+      - link
+      - title
+    Rendered_2:
+      type: object
+      description: A rendered HTML field.
+      properties:
+        rendered:
+          type: string
+        protected:
+          type: boolean
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/Rendered'
+        content:
+          $ref: '#/components/schemas/Rendered'
+        excerpt:
+          $ref: '#/components/schemas/Rendered'
+        author:
+          type: integer
+        featured_media:
+          type: integer
+        categories:
+          type: array
+          description: Category term IDs — the media-format segmentation of the library.
+          items:
+            type: integer
+        tags:
+          type: array
+          items:
+            type: integer
+        meta:
+          type: object
+        _links:
+          type: object
+      required:
+      - id
+      - slug
+      - link
+      - title
+    Rendered:
+      type: object
+      properties:
+        rendered:
+          type: string
+        protected:
+          type: boolean
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        type:
+          type: string
+        subtype:
+          type: string
+        _links:
+          type: object
+      required:
+      - id
+      - title
+      - url
+      - type
+    Error:
+      type: object
+      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+            params:
+              type: object
+      required:
+      - code
+      - message
+  headers:
+    XWPTotal:
+      description: Total number of items in the unpaginated collection.
+      schema:
+        type: integer
+    LinkPagination:
+      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
+      schema:
+        type: string
+    XWPTotalPages:
+      description: Total number of pages available at the current per_page size.
+      schema:
+        type: integer
+  parameters:
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a free-text string.
+      schema:
+        type: string
+    Fields:
+      name: _fields
+      in: query
+      description: Sparse fieldset — comma-separated list of top-level fields to include.
+      schema:
+        type: string
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Unique numeric identifier for the object.
+      schema:
+        type: integer
+    Order:
+      name: order
+      in: query
+      description: Sort direction.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    PerPage_2:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400 `rest_invalid_param`.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Slug:
+      name: slug
+      in: query
+      description: Limit results to objects with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
+    OrderBy:
+      name: orderby
+      in: query
+      description: Sort collection by object attribute.
+      schema:
+        type: string
+        enum:
+        - date
+        - id
+        - include
+        - modified
+        - relevance
+        - slug
+        - title
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Page:
+      name: page
+      in: query
+      description: One-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+  responses:
+    InvalidParam:
+      description: A query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_invalid_param
+            message: 'Invalid parameter(s): per_page'
+            data:
+              status: 400
+    InvalidPostId:
+      description: No object exists with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_post_invalid_id
+            message: Invalid post ID.
+            data:
+              status: 404
+x-refined-from:
+- jenavalve-technology-discover-ar-openapi.yml
+- jenavalve-technology-site-openapi.yml

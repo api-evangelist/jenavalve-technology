@@ -1,0 +1,82 @@
+openapi: 3.2.0
+info:
+  title: JenaValve Discover AR Site API (WordPress REST) SEO API
+  version: '1.0'
+  summary: Anonymously readable content REST surface served by discover-ar.com at /wp-json.
+  description: 'Derived, third-party OpenAPI description of the anonymously readable portion of the WordPress REST API served by Discover AR (https://discover-ar.com/wp-json), JenaValve Technology''s aortic-regurgitation patient- and clinician-education site, linked from the jenavalve.com main navigation as "Resources".
+
+    The substantive content here is a small curated education library — 13 posts segmented by a purpose-built category taxonomy of `articles` (4), `videos` (6), `audio` (3) and `presentations` (0), plus 9 pages and 63 media items. That taxonomy is the one genuinely editorial signal on either JenaValve site: it makes the AR education library retrievable by media format without scraping HTML.
+
+    Every operation below was individually probed anonymously on 2026-08-04 and returned HTTP 200. `wp/v2/settings` returns 401 anonymously and is not described. Write methods are not described: the surface answers `Allow: GET` anonymously and no write was ever attempted.'
+  x-derived-by: API Evangelist enrichment pipeline
+  x-derivation-method: probed
+  x-derivation-note: Derived from the WordPress route-discovery document at https://discover-ar.com/wp-json (8 namespaces, 197 routes) plus direct anonymous probing of each route.
+  x-not-an-api-product: true
+  contact:
+    name: JenaValve Technology
+    url: https://jenavalve.com/contact/
+servers:
+- url: https://discover-ar.com/wp-json
+  description: Discover AR WordPress REST API
+tags:
+- name: SEO
+  description: Yoast SEO head-metadata endpoint.
+paths:
+  /yoast/v1/get_head:
+    get:
+      tags:
+      - SEO
+      operationId: getYoastHead
+      summary: Get Yoast SEO head metadata for a URL
+      description: Returns the rendered `<head>` SEO metadata block (title, meta description, canonical, Open Graph, Twitter card and schema.org JSON-LD) that Yoast SEO v27.2 emits for any discover-ar.com URL. Useful for retrieving structured metadata about an education library item without parsing the page.
+      parameters:
+      - name: url
+        in: query
+        required: true
+        description: The discover-ar.com URL to describe.
+        schema:
+          type: string
+          format: uri
+      responses:
+        '200':
+          description: Rendered head metadata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  html:
+                    type: string
+                    description: The rendered head HTML block including schema.org JSON-LD.
+                  json:
+                    type: object
+                    description: Structured representation of the same metadata.
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    NotFound:
+      description: The requested object does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+            params:
+              type: object
+      required:
+      - code
+      - message

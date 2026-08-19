@@ -1,0 +1,217 @@
+openapi: 3.2.0
+info:
+  title: Jenavalve Technology Discovery API
+  version: '1.0'
+  contact:
+    name: JenaValve Technology
+    url: https://jenavalve.com/contact/
+  description: 'Operations tagged Discovery across 2 of this provider''s published API definitions: jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://discover-ar.com/wp-json
+  description: Discover AR WordPress REST API
+- url: https://jenavalve.com/wp-json
+  description: JenaValve corporate site WordPress REST API
+tags:
+- name: Discovery
+  description: Route and capability discovery documents.
+paths:
+  /:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Discovery
+      operationId: getDiscoverArApiIndex
+      summary: Get the API index
+      description: Returns the site's WordPress REST route-discovery document — site name, description, home URL, the 8 registered namespaces and the full 197-route index.
+      responses:
+        '200':
+          description: Route discovery document
+          content:
+            application/json:
+              schema:
+                type: object
+  /wp/v2/types:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Discovery
+      operationId: listDiscoverArContentTypes
+      summary: List registered content types
+      description: Returns the 11 registered post types and their REST bases. Unlike jenavalve.com this site registers no custom post type.
+      responses:
+        '200':
+          description: Map of content types keyed by slug
+          content:
+            application/json:
+              schema:
+                type: object
+  /wp/v2/taxonomies:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Discovery
+      operationId: listDiscoverArTaxonomies
+      summary: List registered taxonomies
+      responses:
+        '200':
+          description: Map of taxonomies keyed by slug
+          content:
+            application/json:
+              schema:
+                type: object
+  /wp/v2/statuses:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+    get:
+      tags:
+      - Discovery
+      operationId: listDiscoverArPostStatuses
+      summary: List post statuses visible anonymously
+      responses:
+        '200':
+          description: Map of statuses keyed by slug
+          content:
+            application/json:
+              schema:
+                type: object
+  /wp/v2/types/{type}:
+    servers:
+    - url: https://jenavalve.com/wp-json
+      description: JenaValve corporate site WordPress REST API
+    get:
+      tags:
+      - Discovery
+      operationId: getContentType
+      summary: Get a registered content type
+      parameters:
+      - name: type
+        in: path
+        required: true
+        description: Content type slug, e.g. `post`.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A single content type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentType'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/taxonomies/{taxonomy}:
+    servers:
+    - url: https://jenavalve.com/wp-json
+      description: JenaValve corporate site WordPress REST API
+    get:
+      tags:
+      - Discovery
+      operationId: getTaxonomy
+      summary: Get a registered taxonomy
+      parameters:
+      - name: taxonomy
+        in: path
+        required: true
+        description: Taxonomy slug, e.g. `category`.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A single taxonomy
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /wp/v2/statuses/{status}:
+    servers:
+    - url: https://jenavalve.com/wp-json
+      description: JenaValve corporate site WordPress REST API
+    get:
+      tags:
+      - Discovery
+      operationId: getPostStatus
+      summary: Get a post status
+      parameters:
+      - name: status
+        in: path
+        required: true
+        description: Status slug, e.g. `publish`.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A single post status
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    ContentType:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        hierarchical:
+          type: boolean
+        has_archive:
+          type: boolean
+        icon:
+          type: string
+        taxonomies:
+          type: array
+          items:
+            type: string
+        rest_base:
+          type: string
+        rest_namespace:
+          type: string
+        _links:
+          type: object
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on `rest_invalid_param`.
+      required:
+      - code
+      - message
+  responses:
+    NotFound:
+      description: The requested object does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+x-refined-from:
+- jenavalve-technology-discover-ar-openapi.yml
+- jenavalve-technology-site-openapi.yml

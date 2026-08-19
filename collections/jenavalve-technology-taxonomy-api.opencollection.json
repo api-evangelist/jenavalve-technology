@@ -1,0 +1,99 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jenavalve Technology Taxonomy API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Taxonomy",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List education-format categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/categories",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to objects with one or more specific slugs."
+              },
+              {
+                "name": "hide_empty",
+                "value": "",
+                "type": "query",
+                "description": "Omit terms that have no assigned posts."
+              }
+            ]
+          },
+          "docs": "Lists the category taxonomy that segments the AR education library by media format — `articles` (id 12, 4 items), `videos` (id 13, 6), `audio` (id 15, 3), `presentations` (id 14, 0) and `uncategorized` (id 1, 0)."
+        },
+        {
+          "info": {
+            "name": "List post tags",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/tags",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100."
+              }
+            ]
+          },
+          "docs": "Lists the post_tag taxonomy. Empty on 2026-08-04 (0 terms)."
+        },
+        {
+          "info": {
+            "name": "Get a category by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/categories/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique numeric identifier for the object."
+              }
+            ]
+          },
+          "docs": "Get a category by ID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

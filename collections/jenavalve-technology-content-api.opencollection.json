@@ -1,0 +1,334 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Jenavalve Technology Content API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Content",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List AR education library items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/posts",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a free-text string."
+              },
+              {
+                "name": "orderby",
+                "value": "",
+                "type": "query",
+                "description": "Sort collection by object attribute."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort direction."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to objects with one or more specific slugs."
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Sparse fieldset — comma-separated list of top-level fields to include."
+              },
+              {
+                "name": "categories",
+                "value": "",
+                "type": "query",
+                "description": "Limit to posts in one or more category IDs — 12 articles, 13 videos, 15 audio, 14 presentations."
+              }
+            ]
+          },
+          "docs": "Lists the published education library — 13 items on 2026-08-04. Filter by the `categories` parameter to segment by media format (articles, videos, audio, presentations). Total count is in `X-WP-Total`."
+        },
+        {
+          "info": {
+            "name": "Get an education library item by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/posts/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique numeric identifier for the object."
+              }
+            ]
+          },
+          "docs": "Get an education library item by ID"
+        },
+        {
+          "info": {
+            "name": "List site pages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/pages",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a free-text string."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to objects with one or more specific slugs."
+              },
+              {
+                "name": "_fields",
+                "value": "",
+                "type": "query",
+                "description": "Sparse fieldset — comma-separated list of top-level fields to include."
+              }
+            ]
+          },
+          "docs": "Lists published pages — 9 items on 2026-08-04."
+        },
+        {
+          "info": {
+            "name": "Get a page by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/pages/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Unique numeric identifier for the object."
+              }
+            ]
+          },
+          "docs": "Get a page by ID"
+        },
+        {
+          "info": {
+            "name": "Search AR education content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/search",
+            "params": [
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Free-text query."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100."
+              },
+              {
+                "name": "subtype",
+                "value": "",
+                "type": "query",
+                "description": "Restrict to a post subtype (e.g. post, page)."
+              }
+            ]
+          },
+          "docs": "Cross-type site search over the AR education library, returning lightweight `{id, title, url, type, subtype}` hits."
+        },
+        {
+          "info": {
+            "name": "List public content authors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/users",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100."
+              }
+            ]
+          },
+          "docs": "Lists the public author profiles attached to published content — one on 2026-08-04. Only public byline fields are returned anonymously."
+        },
+        {
+          "info": {
+            "name": "List reusable block patterns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/blocks",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100."
+              }
+            ]
+          },
+          "docs": "Lists reusable blocks. Empty on 2026-08-04 (0 items)."
+        },
+        {
+          "info": {
+            "name": "List block-editor navigation menus",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/navigation",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100."
+              }
+            ]
+          },
+          "docs": "Lists `wp_navigation` items. Empty on 2026-08-04 (0 items)."
+        },
+        {
+          "info": {
+            "name": "List approved comments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/comments",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400 `rest_invalid_param`."
+              }
+            ]
+          },
+          "docs": "Lists approved comments. Empty on 2026-08-04 (0 items); commenting is not used on this site."
+        },
+        {
+          "info": {
+            "name": "List events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://discover-ar.com/wp-json/wp/v2/events",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "One-based page of the collection to return."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400 `rest_invalid_param`."
+              },
+              {
+                "name": "search",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to those matching a free-text string."
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "query",
+                "description": "Limit results to objects with one or more specific slugs."
+              }
+            ]
+          },
+          "docs": "Lists items of the site's custom `events` post type, registered via Custom Post Type UI. The route is registered and answers anonymously but the collection was empty on 2026-08-04 (0 items)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
