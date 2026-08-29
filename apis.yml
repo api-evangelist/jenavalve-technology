@@ -16,6 +16,18 @@ description: 'JenaValve Technology, Inc. is a privately held medical-device comp
   page, and no developer, api, docs, status or trust subdomain resolves. Its two corporate
   WordPress sites do each serve an anonymously readable REST API, and on both of them the standard
   content collections are wide open while the administrative routes are correctly locked to 401.'
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://jenavalve.com/wp-content/uploads/cropped-jvicon.png
 url: https://raw.githubusercontent.com/api-evangelist/jenavalve-technology/refs/heads/main/apis.yml
 x-type: company
