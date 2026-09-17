@@ -156,28 +156,6 @@ apis:
     url: conformance/jenavalve-technology-conformance.yml
   - type: Lifecycle
     url: lifecycle/jenavalve-technology-lifecycle.yml
-- aid: jenavalve-technology:jenavalve-technology-oembed-api
-  name: JenaValve Technology O Embed API
-  description: oEmbed provider endpoint for discover-ar.com URLs.
-  humanURL: https://jenavalve.com/news/
-  baseURL: https://jenavalve.com/wp-json
-  tags:
-  - oEmbed
-  properties:
-  - type: OpenAPI
-    url: openapi/jenavalve-technology-oembed-api-openapi.yml
-  - type: Authentication
-    url: authentication/jenavalve-technology-authentication.yml
-  - type: Conventions
-    url: conventions/jenavalve-technology-conventions.yml
-  - type: ErrorCatalog
-    url: errors/jenavalve-technology-problem-types.yml
-  - type: DataModel
-    url: data-model/jenavalve-technology-data-model.yml
-  - type: Conformance
-    url: conformance/jenavalve-technology-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/jenavalve-technology-lifecycle.yml
 - aid: jenavalve-technology:jenavalve-technology-seo-api
   name: JenaValve Technology SEO API
   description: Yoast SEO head-metadata endpoint.
@@ -210,6 +188,28 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/jenavalve-technology-taxonomy-api-openapi.yml
+  - type: Authentication
+    url: authentication/jenavalve-technology-authentication.yml
+  - type: Conventions
+    url: conventions/jenavalve-technology-conventions.yml
+  - type: ErrorCatalog
+    url: errors/jenavalve-technology-problem-types.yml
+  - type: DataModel
+    url: data-model/jenavalve-technology-data-model.yml
+  - type: Conformance
+    url: conformance/jenavalve-technology-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/jenavalve-technology-lifecycle.yml
+- aid: jenavalve-technology:jenavalve-technology-o-embed-api
+  name: JenaValve Technology o Embed API
+  description: oEmbed provider endpoint for discover-ar.com URLs.
+  humanURL: https://jenavalve.com/news/
+  baseURL: https://jenavalve.com/wp-json
+  tags:
+  - o Embed
+  properties:
+  - type: OpenAPI
+    url: openapi/jenavalve-technology-o-embed-api-openapi.yml
   - type: Authentication
     url: authentication/jenavalve-technology-authentication.yml
   - type: Conventions
