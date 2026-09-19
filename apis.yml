@@ -206,6 +206,8 @@ apis:
   humanURL: https://jenavalve.com/news/
   baseURL: https://jenavalve.com/wp-json
   tags:
+  - oEmbed
+  tags_raw:
   - o Embed
   properties:
   - type: OpenAPI
