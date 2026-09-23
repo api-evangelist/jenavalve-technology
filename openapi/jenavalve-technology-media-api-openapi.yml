@@ -5,6 +5,11 @@ info:
   contact:
     name: JenaValve Technology
     url: https://jenavalve.com/contact/
+  x-derivation-method: probed
+  x-refined-note:
+  - x-derivation-note differs across the merged source definitions and was not carried
+  x-derived-by: API Evangelist enrichment pipeline
+  x-not-an-api-product: true
   description: 'Operations tagged Media across 2 of this provider''s published API definitions: jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://discover-ar.com/wp-json
@@ -16,9 +21,6 @@ tags:
   description: Uploaded media library items.
 paths:
   /wp/v2/media:
-    servers:
-    - url: https://discover-ar.com/wp-json
-      description: Discover AR WordPress REST API
     get:
       tags:
       - Media
@@ -57,10 +59,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/MediaItem'
-  /wp/v2/media/{id}:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/media/{id}:
     get:
       tags:
       - Media
@@ -77,33 +79,123 @@ paths:
                 $ref: '#/components/schemas/MediaItem'
         '404':
           $ref: '#/components/responses/InvalidPostId'
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
 components:
+  responses:
+    InvalidPostId:
+      description: No object exists with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_post_invalid_id
+            message: Invalid post ID.
+            data:
+              status: 404
+    InvalidParam:
+      description: A query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error_2'
+          example:
+            code: rest_invalid_param
+            message: 'Invalid parameter(s): per_page'
+            data:
+              status: 400
+  parameters:
+    Fields:
+      name: _fields
+      in: query
+      description: Sparse fieldset — comma-separated list of top-level fields to include.
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      description: One-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a free-text string.
+      schema:
+        type: string
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Unique numeric identifier for the object.
+      schema:
+        type: integer
+    Fields_2:
+      name: _fields
+      in: query
+      description: Sparse fieldset — comma-separated list of top-level fields to include in the response.
+      schema:
+        type: string
+    PerPage_2:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400 `rest_invalid_param`.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    OrderBy:
+      name: orderby
+      in: query
+      description: Sort collection by object attribute.
+      schema:
+        type: string
+        enum:
+        - date
+        - id
+        - include
+        - modified
+        - relevance
+        - slug
+        - title
+    Order:
+      name: order
+      in: query
+      description: Sort direction.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+  headers:
+    XWPTotalPages:
+      description: Total number of pages available at the current per_page size.
+      schema:
+        type: integer
+    LinkPagination:
+      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
+      schema:
+        type: string
+    XWPTotal:
+      description: Total number of items in the unpaginated collection.
+      schema:
+        type: integer
   schemas:
-    Error:
-      type: object
-      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-            params:
-              type: object
-      required:
-      - code
-      - message
-    Rendered:
-      type: object
-      properties:
-        rendered:
-          type: string
-        protected:
-          type: boolean
     MediaItem:
       type: object
       properties:
@@ -138,68 +230,108 @@ components:
       - id
       - source_url
       - mime_type
-  headers:
-    XWPTotalPages:
-      description: Total number of pages available at the current per_page size.
-      schema:
-        type: integer
-    XWPTotal:
-      description: Total number of items in the unpaginated collection.
-      schema:
-        type: integer
-    LinkPagination:
-      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
-      schema:
-        type: string
-  responses:
-    InvalidPostId:
-      description: No object exists with the given ID.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            code: rest_post_invalid_id
-            message: Invalid post ID.
-            data:
-              status: 404
-  parameters:
-    PerPage:
-      name: per_page
-      in: query
-      description: Items per page. Maximum 100.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    Page:
-      name: page
-      in: query
-      description: One-based page of the collection to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    Search:
-      name: search
-      in: query
-      description: Limit results to those matching a free-text string.
-      schema:
-        type: string
-    Fields:
-      name: _fields
-      in: query
-      description: Sparse fieldset — comma-separated list of top-level fields to include.
-      schema:
-        type: string
-    Id:
-      name: id
-      in: path
-      required: true
-      description: Unique numeric identifier for the object.
-      schema:
-        type: integer
+    Rendered:
+      type: object
+      properties:
+        rendered:
+          type: string
+        protected:
+          type: boolean
+    Error:
+      type: object
+      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+            params:
+              type: object
+      required:
+      - code
+      - message
+    MediaItem_2:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/Rendered_2'
+        author:
+          type: integer
+        description:
+          $ref: '#/components/schemas/Rendered_2'
+        caption:
+          $ref: '#/components/schemas/Rendered_2'
+        alt_text:
+          type: string
+        media_type:
+          type: string
+        mime_type:
+          type: string
+        media_details:
+          type: object
+          description: Width, height, file name and generated size renditions.
+        post:
+          type: integer
+          description: ID of the post or page this item is attached to.
+        source_url:
+          type: string
+          format: uri
+          description: Direct URL to the uploaded file.
+        filename:
+          type: string
+        filesize:
+          type: integer
+        _links:
+          type: object
+      required:
+      - id
+      - source_url
+      - mime_type
+    Rendered_2:
+      type: object
+      description: A rendered HTML field.
+      properties:
+        rendered:
+          type: string
+        protected:
+          type: boolean
+    Error_2:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on `rest_invalid_param`.
+      required:
+      - code
+      - message
 x-refined-from:
 - jenavalve-technology-discover-ar-openapi.yml
 - jenavalve-technology-site-openapi.yml

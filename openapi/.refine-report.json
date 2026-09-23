@@ -1,35 +1,42 @@
 {
   "provider": "jenavalve-technology",
   "sources": [
-    "jenavalve-technology-authors-api-openapi.yml",
-    "jenavalve-technology-content-api-openapi.yml",
-    "jenavalve-technology-discovery-api-openapi.yml",
-    "jenavalve-technology-media-api-openapi.yml",
-    "jenavalve-technology-oembed-api-openapi.yml",
-    "jenavalve-technology-seo-api-openapi.yml",
-    "jenavalve-technology-taxonomy-api-openapi.yml"
+    "_ae-authored/jenavalve-technology-discover-ar-openapi.yml",
+    "_ae-authored/jenavalve-technology-site-openapi.yml"
   ],
   "outputs": [
-    "jenavalve-technology-authors-api-openapi.yml",
     "jenavalve-technology-content-api-openapi.yml",
     "jenavalve-technology-discovery-api-openapi.yml",
     "jenavalve-technology-media-api-openapi.yml",
-    "jenavalve-technology-oembed-api-openapi.yml",
     "jenavalve-technology-seo-api-openapi.yml",
-    "jenavalve-technology-taxonomy-api-openapi.yml"
+    "jenavalve-technology-taxonomy-api-openapi.yml",
+    "jenavalve-technology-oembed-api-openapi.yml",
+    "jenavalve-technology-authors-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
   "notes": [
-    "jenavalve-technology-authors-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "jenavalve-technology-content-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "jenavalve-technology-discovery-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "jenavalve-technology-media-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "jenavalve-technology-oembed-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "jenavalve-technology-seo-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "jenavalve-technology-taxonomy-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: already-registered"
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "jenavalve-technology-discover-ar-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "jenavalve-technology-site-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "tag 'Content' spans 2 source specs (jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml): per-path servers applied",
+    "tag 'Discovery' spans 2 source specs (jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml): per-path servers applied",
+    "tag 'Media' spans 2 source specs (jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml): per-path servers applied",
+    "tag 'Taxonomy' spans 2 source specs (jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml): per-path servers applied",
+    "tag 'oEmbed' spans 2 source specs (jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml): per-path servers applied",
+    "superseded outputs removed: jenavalve-technology-o-embed-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 7 total)"
   ],
-  "skipped": []
+  "skipped": [
+    "jenavalve-technology-authors-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "jenavalve-technology-content-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "jenavalve-technology-discovery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "jenavalve-technology-media-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "jenavalve-technology-o-embed-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "jenavalve-technology-seo-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "jenavalve-technology-taxonomy-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

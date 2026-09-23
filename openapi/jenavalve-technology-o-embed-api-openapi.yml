@@ -5,6 +5,11 @@ info:
   contact:
     name: JenaValve Technology
     url: https://jenavalve.com/contact/
+  x-derivation-method: probed
+  x-refined-note:
+  - x-derivation-note differs across the merged source definitions and was not carried
+  x-derived-by: API Evangelist enrichment pipeline
+  x-not-an-api-product: true
   description: 'Operations tagged oEmbed across 2 of this provider''s published API definitions: jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://discover-ar.com/wp-json
@@ -12,16 +17,13 @@ servers:
 - url: https://jenavalve.com/wp-json
   description: JenaValve corporate site WordPress REST API
 tags:
-- name: oEmbed
+- name: o Embed
   description: oEmbed provider endpoint for discover-ar.com URLs.
 paths:
   /oembed/1.0/embed:
-    servers:
-    - url: https://discover-ar.com/wp-json
-      description: Discover AR WordPress REST API
     get:
       tags:
-      - oEmbed
+      - o Embed
       operationId: getDiscoverArOembed
       summary: Get an oEmbed response for a discover-ar.com URL
       parameters:
@@ -50,14 +52,10 @@ paths:
                 type: object
         '404':
           $ref: '#/components/responses/NotFound'
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
 components:
-  responses:
-    NotFound:
-      description: The requested object does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -77,6 +75,60 @@ components:
       required:
       - code
       - message
+    Oembed:
+      type: object
+      properties:
+        version:
+          type: string
+        provider_name:
+          type: string
+        provider_url:
+          type: string
+          format: uri
+        author_name:
+          type: string
+        author_url:
+          type: string
+          format: uri
+        title:
+          type: string
+        type:
+          type: string
+        width:
+          type: integer
+        height:
+          type: integer
+        html:
+          type: string
+    Error_2:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on `rest_invalid_param`.
+      required:
+      - code
+      - message
+  responses:
+    NotFound:
+      description: The requested object does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
 x-refined-from:
 - jenavalve-technology-discover-ar-openapi.yml
 - jenavalve-technology-site-openapi.yml

@@ -5,6 +5,11 @@ info:
   contact:
     name: JenaValve Technology
     url: https://jenavalve.com/contact/
+  x-derivation-method: probed
+  x-refined-note:
+  - x-derivation-note differs across the merged source definitions and was not carried
+  x-derived-by: API Evangelist enrichment pipeline
+  x-not-an-api-product: true
   description: 'Operations tagged Content across 2 of this provider''s published API definitions: jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://discover-ar.com/wp-json
@@ -16,9 +21,6 @@ tags:
   description: The AR education library — posts, pages and site search.
 paths:
   /wp/v2/posts:
-    servers:
-    - url: https://discover-ar.com/wp-json
-      description: Discover AR WordPress REST API
     get:
       tags:
       - Content
@@ -58,10 +60,10 @@ paths:
                   $ref: '#/components/schemas/Post'
         '400':
           $ref: '#/components/responses/InvalidParam'
-  /wp/v2/posts/{id}:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/posts/{id}:
     get:
       tags:
       - Content
@@ -78,10 +80,10 @@ paths:
                 $ref: '#/components/schemas/Post'
         '404':
           $ref: '#/components/responses/InvalidPostId'
-  /wp/v2/pages:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/pages:
     get:
       tags:
       - Content
@@ -112,10 +114,10 @@ paths:
                   $ref: '#/components/schemas/Post'
         '400':
           $ref: '#/components/responses/InvalidParam'
-  /wp/v2/pages/{id}:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/pages/{id}:
     get:
       tags:
       - Content
@@ -132,10 +134,10 @@ paths:
                 $ref: '#/components/schemas/Post'
         '404':
           $ref: '#/components/responses/InvalidPostId'
-  /wp/v2/search:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/search:
     get:
       tags:
       - Content
@@ -172,10 +174,10 @@ paths:
                   $ref: '#/components/schemas/SearchResult'
         '400':
           $ref: '#/components/responses/InvalidParam'
-  /wp/v2/users:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/users:
     get:
       tags:
       - Content
@@ -192,10 +194,10 @@ paths:
             application/json:
               schema:
                 type: object
-  /wp/v2/blocks:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/blocks:
     get:
       tags:
       - Content
@@ -214,10 +216,10 @@ paths:
                 type: array
                 items:
                   type: object
-  /wp/v2/navigation:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/navigation:
     get:
       tags:
       - Content
@@ -236,10 +238,10 @@ paths:
                 type: array
                 items:
                   type: object
-  /wp/v2/comments:
     servers:
-    - url: https://jenavalve.com/wp-json
-      description: JenaValve corporate site WordPress REST API
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+  /wp/v2/comments:
     get:
       tags:
       - Content
@@ -258,10 +260,10 @@ paths:
                 type: array
                 items:
                   type: object
-  /wp/v2/events:
     servers:
     - url: https://jenavalve.com/wp-json
       description: JenaValve corporate site WordPress REST API
+  /wp/v2/events:
     get:
       tags:
       - Content
@@ -282,64 +284,177 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Page'
+    servers:
+    - url: https://jenavalve.com/wp-json
+      description: JenaValve corporate site WordPress REST API
 components:
-  schemas:
+  responses:
+    InvalidPostId:
+      description: No object exists with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_post_invalid_id
+            message: Invalid post ID.
+            data:
+              status: 404
+    InvalidParam:
+      description: A query parameter failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_invalid_param
+            message: 'Invalid parameter(s): per_page'
+            data:
+              status: 400
+  parameters:
+    Fields:
+      name: _fields
+      in: query
+      description: Sparse fieldset — comma-separated list of top-level fields to include.
+      schema:
+        type: string
+    Slug:
+      name: slug
+      in: query
+      description: Limit results to objects with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
     Page:
+      name: page
+      in: query
+      description: One-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a free-text string.
+      schema:
+        type: string
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Unique numeric identifier for the object.
+      schema:
+        type: integer
+    OrderBy:
+      name: orderby
+      in: query
+      description: Sort collection by object attribute.
+      schema:
+        type: string
+        enum:
+        - date
+        - id
+        - include
+        - modified
+        - relevance
+        - slug
+        - title
+    Order:
+      name: order
+      in: query
+      description: Sort direction.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    Fields_2:
+      name: _fields
+      in: query
+      description: Sparse fieldset — comma-separated list of top-level fields to include in the response.
+      schema:
+        type: string
+    PerPage_2:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400 `rest_invalid_param`.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+  headers:
+    XWPTotalPages:
+      description: Total number of pages available at the current per_page size.
+      schema:
+        type: integer
+    LinkPagination:
+      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
+      schema:
+        type: string
+    XWPTotal:
+      description: Total number of items in the unpaginated collection.
+      schema:
+        type: integer
+  schemas:
+    Rendered:
       type: object
-      properties:
-        id:
-          type: integer
-        date:
-          type: string
-          format: date-time
-        modified:
-          type: string
-          format: date-time
-        slug:
-          type: string
-        status:
-          type: string
-        type:
-          type: string
-        link:
-          type: string
-          format: uri
-        title:
-          $ref: '#/components/schemas/Rendered_2'
-        content:
-          $ref: '#/components/schemas/Rendered_2'
-        excerpt:
-          $ref: '#/components/schemas/Rendered_2'
-        author:
-          type: integer
-        featured_media:
-          type: integer
-        parent:
-          type: integer
-          description: ID of the parent page, or 0 for a top-level page.
-        menu_order:
-          type: integer
-        template:
-          type: string
-        meta:
-          type: object
-        acf:
-          type: object
-        _links:
-          type: object
-      required:
-      - id
-      - slug
-      - link
-      - title
-    Rendered_2:
-      type: object
-      description: A rendered HTML field.
       properties:
         rendered:
           type: string
         protected:
           type: boolean
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        type:
+          type: string
+        subtype:
+          type: string
+        _links:
+          type: object
+      required:
+      - id
+      - title
+      - url
+      - type
+    Error:
+      type: object
+      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+            params:
+              type: object
+      required:
+      - code
+      - message
     Post:
       type: object
       properties:
@@ -388,14 +503,15 @@ components:
       - slug
       - link
       - title
-    Rendered:
+    Rendered_2:
       type: object
+      description: A rendered HTML field.
       properties:
         rendered:
           type: string
         protected:
           type: boolean
-    SearchResult:
+    SearchResult_2:
       type: object
       properties:
         id:
@@ -409,6 +525,7 @@ components:
           type: string
         subtype:
           type: string
+          description: The underlying post type, e.g. `post` or `page`.
         _links:
           type: object
       required:
@@ -416,138 +533,152 @@ components:
       - title
       - url
       - type
-    Error:
+    Error_2:
       type: object
-      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
       properties:
         code:
           type: string
+          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
         message:
           type: string
+          description: Human-readable message.
         data:
           type: object
           properties:
             status:
               type: integer
+              description: HTTP status code, repeated in the body.
             params:
               type: object
+              description: Per-parameter validation messages, present on `rest_invalid_param`.
       required:
       - code
       - message
-  headers:
-    XWPTotal:
-      description: Total number of items in the unpaginated collection.
-      schema:
-        type: integer
-    LinkPagination:
-      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
-      schema:
-        type: string
-    XWPTotalPages:
-      description: Total number of pages available at the current per_page size.
-      schema:
-        type: integer
-  parameters:
-    Search:
-      name: search
-      in: query
-      description: Limit results to those matching a free-text string.
-      schema:
-        type: string
-    Fields:
-      name: _fields
-      in: query
-      description: Sparse fieldset — comma-separated list of top-level fields to include.
-      schema:
-        type: string
-    Id:
-      name: id
-      in: path
-      required: true
-      description: Unique numeric identifier for the object.
-      schema:
-        type: integer
-    Order:
-      name: order
-      in: query
-      description: Sort direction.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-    PerPage_2:
-      name: per_page
-      in: query
-      description: Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400 `rest_invalid_param`.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    Slug:
-      name: slug
-      in: query
-      description: Limit results to objects with one or more specific slugs.
-      schema:
-        type: array
-        items:
-          type: string
-    OrderBy:
-      name: orderby
-      in: query
-      description: Sort collection by object attribute.
-      schema:
-        type: string
-        enum:
-        - date
-        - id
-        - include
-        - modified
-        - relevance
-        - slug
-        - title
-    PerPage:
-      name: per_page
-      in: query
-      description: Items per page. Maximum 100.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
     Page:
-      name: page
-      in: query
-      description: One-based page of the collection to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-  responses:
-    InvalidParam:
-      description: A query parameter failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            code: rest_invalid_param
-            message: 'Invalid parameter(s): per_page'
-            data:
-              status: 400
-    InvalidPostId:
-      description: No object exists with the given ID.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            code: rest_post_invalid_id
-            message: Invalid post ID.
-            data:
-              status: 404
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/Rendered_2'
+        content:
+          $ref: '#/components/schemas/Rendered_2'
+        excerpt:
+          $ref: '#/components/schemas/Rendered_2'
+        author:
+          type: integer
+        featured_media:
+          type: integer
+        parent:
+          type: integer
+          description: ID of the parent page, or 0 for a top-level page.
+        menu_order:
+          type: integer
+        template:
+          type: string
+        meta:
+          type: object
+        acf:
+          type: object
+        _links:
+          type: object
+      required:
+      - id
+      - slug
+      - link
+      - title
+    Post_2:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        date_gmt:
+          type: string
+          format: date-time
+        guid:
+          $ref: '#/components/schemas/Rendered_2'
+        modified:
+          type: string
+          format: date-time
+        modified_gmt:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/Rendered_2'
+        content:
+          $ref: '#/components/schemas/Rendered_2'
+        excerpt:
+          $ref: '#/components/schemas/Rendered_2'
+        author:
+          type: integer
+          description: ID of the authoring user; resolve via getAuthor.
+        featured_media:
+          type: integer
+          description: ID of the featured media item; resolve via getMediaItem.
+        comment_status:
+          type: string
+        ping_status:
+          type: string
+        sticky:
+          type: boolean
+        template:
+          type: string
+        format:
+          type: string
+        meta:
+          type: object
+        categories:
+          type: array
+          description: Category term IDs; resolve via getCategory.
+          items:
+            type: integer
+        tags:
+          type: array
+          items:
+            type: integer
+        class_list:
+          type: array
+          items:
+            type: string
+        acf:
+          type: object
+          description: Advanced Custom Fields payload attached to the post.
+        _links:
+          type: object
+          description: HAL-style link relations to author, media, terms and self.
+      required:
+      - id
+      - slug
+      - link
+      - title
 x-refined-from:
 - jenavalve-technology-discover-ar-openapi.yml
 - jenavalve-technology-site-openapi.yml

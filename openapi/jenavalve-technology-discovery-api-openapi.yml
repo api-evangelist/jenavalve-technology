@@ -5,6 +5,11 @@ info:
   contact:
     name: JenaValve Technology
     url: https://jenavalve.com/contact/
+  x-derivation-method: probed
+  x-refined-note:
+  - x-derivation-note differs across the merged source definitions and was not carried
+  x-derived-by: API Evangelist enrichment pipeline
+  x-not-an-api-product: true
   description: 'Operations tagged Discovery across 2 of this provider''s published API definitions: jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://discover-ar.com/wp-json
@@ -16,9 +21,6 @@ tags:
   description: Route and capability discovery documents.
 paths:
   /:
-    servers:
-    - url: https://discover-ar.com/wp-json
-      description: Discover AR WordPress REST API
     get:
       tags:
       - Discovery
@@ -32,10 +34,10 @@ paths:
             application/json:
               schema:
                 type: object
-  /wp/v2/types:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/types:
     get:
       tags:
       - Discovery
@@ -49,10 +51,10 @@ paths:
             application/json:
               schema:
                 type: object
-  /wp/v2/taxonomies:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/taxonomies:
     get:
       tags:
       - Discovery
@@ -65,10 +67,10 @@ paths:
             application/json:
               schema:
                 type: object
-  /wp/v2/statuses:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
+  /wp/v2/statuses:
     get:
       tags:
       - Discovery
@@ -81,10 +83,10 @@ paths:
             application/json:
               schema:
                 type: object
-  /wp/v2/types/{type}:
     servers:
-    - url: https://jenavalve.com/wp-json
-      description: JenaValve corporate site WordPress REST API
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
+  /wp/v2/types/{type}:
     get:
       tags:
       - Discovery
@@ -106,10 +108,10 @@ paths:
                 $ref: '#/components/schemas/ContentType'
         '404':
           $ref: '#/components/responses/NotFound'
-  /wp/v2/taxonomies/{taxonomy}:
     servers:
     - url: https://jenavalve.com/wp-json
       description: JenaValve corporate site WordPress REST API
+  /wp/v2/taxonomies/{taxonomy}:
     get:
       tags:
       - Discovery
@@ -131,10 +133,10 @@ paths:
                 type: object
         '404':
           $ref: '#/components/responses/NotFound'
-  /wp/v2/statuses/{status}:
     servers:
     - url: https://jenavalve.com/wp-json
       description: JenaValve corporate site WordPress REST API
+  /wp/v2/statuses/{status}:
     get:
       tags:
       - Discovery
@@ -156,8 +158,33 @@ paths:
                 type: object
         '404':
           $ref: '#/components/responses/NotFound'
+    servers:
+    - url: https://jenavalve.com/wp-json
+      description: JenaValve corporate site WordPress REST API
 components:
   schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on `rest_invalid_param`.
+      required:
+      - code
+      - message
     ContentType:
       type: object
       properties:
@@ -183,28 +210,39 @@ components:
           type: string
         _links:
           type: object
-    Error:
+    ApiIndex:
       type: object
-      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
       properties:
-        code:
+        name:
           type: string
-          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
-        message:
+        description:
           type: string
-          description: Human-readable message.
-        data:
+        url:
+          type: string
+          format: uri
+        home:
+          type: string
+          format: uri
+        gmt_offset:
+          type: number
+        timezone_string:
+          type: string
+        namespaces:
+          type: array
+          items:
+            type: string
+        authentication:
           type: object
-          properties:
-            status:
-              type: integer
-              description: HTTP status code, repeated in the body.
-            params:
-              type: object
-              description: Per-parameter validation messages, present on `rest_invalid_param`.
-      required:
-      - code
-      - message
+          description: Supported authentication mechanisms. This site advertises WordPress application passwords, authorized at /wp-admin/authorize-application.php.
+        routes:
+          type: object
+          description: Map of every registered route to its methods, args and endpoints.
+        site_logo:
+          type: integer
+        site_icon:
+          type: integer
+        site_icon_url:
+          type: string
   responses:
     NotFound:
       description: The requested object does not exist.
