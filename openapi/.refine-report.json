@@ -1,42 +1,36 @@
 {
   "provider": "jenavalve-technology",
   "sources": [
-    "_ae-authored/jenavalve-technology-discover-ar-openapi.yml",
-    "_ae-authored/jenavalve-technology-site-openapi.yml"
+    "jenavalve-technology-content-api-openapi.yml",
+    "jenavalve-technology-discovery-api-openapi.yml",
+    "jenavalve-technology-media-api-openapi.yml",
+    "jenavalve-technology-o-embed-api-openapi.yml",
+    "jenavalve-technology-seo-api-openapi.yml",
+    "jenavalve-technology-taxonomy-api-openapi.yml"
   ],
   "outputs": [
     "jenavalve-technology-content-api-openapi.yml",
     "jenavalve-technology-discovery-api-openapi.yml",
     "jenavalve-technology-media-api-openapi.yml",
+    "jenavalve-technology-o-embed-api-openapi.yml",
     "jenavalve-technology-seo-api-openapi.yml",
-    "jenavalve-technology-taxonomy-api-openapi.yml",
-    "jenavalve-technology-oembed-api-openapi.yml",
-    "jenavalve-technology-authors-api-openapi.yml"
+    "jenavalve-technology-taxonomy-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
-  "warnings": [],
-  "notes": [
-    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
-    "jenavalve-technology-discover-ar-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "jenavalve-technology-site-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "tag 'Content' spans 2 source specs (jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml): per-path servers applied",
-    "tag 'Discovery' spans 2 source specs (jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml): per-path servers applied",
-    "tag 'Media' spans 2 source specs (jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml): per-path servers applied",
-    "tag 'Taxonomy' spans 2 source specs (jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml): per-path servers applied",
-    "tag 'oEmbed' spans 2 source specs (jenavalve-technology-discover-ar-openapi.yml, jenavalve-technology-site-openapi.yml): per-path servers applied",
-    "superseded outputs removed: jenavalve-technology-o-embed-api-openapi.yml",
-    "apis.yml register: written (+1 apis, 7 total)"
+  "warnings": [
+    "jenavalve-technology-content-api-openapi.yml: previously refined output kept for 10 operation(s) no archived document covers (e.g. /wp/v2/blocks get, /wp/v2/comments get, /wp/v2/events get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "jenavalve-technology-discovery-api-openapi.yml: previously refined output kept for 7 operation(s) no archived document covers (e.g. / get, /wp/v2/statuses get, /wp/v2/statuses/{status} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "jenavalve-technology-media-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. /wp/v2/media get, /wp/v2/media/{id} get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "jenavalve-technology-o-embed-api-openapi.yml: previously refined output kept for 1 operation(s) no archived document covers (e.g. /oembed/1.0/embed get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "jenavalve-technology-seo-api-openapi.yml: previously refined output kept for 1 operation(s) no archived document covers (e.g. /yoast/v1/get_head get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth.",
+    "jenavalve-technology-taxonomy-api-openapi.yml: previously refined output kept for 3 operation(s) no archived document covers (e.g. /wp/v2/categories get, /wp/v2/categories/{id} get, /wp/v2/tags get); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
   ],
-  "skipped": [
-    "jenavalve-technology-authors-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "jenavalve-technology-content-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "jenavalve-technology-discovery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "jenavalve-technology-media-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "jenavalve-technology-o-embed-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "jenavalve-technology-seo-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "jenavalve-technology-taxonomy-api-openapi.yml: previously refined output, superseded by openapi/_original/"
-  ]
+  "notes": [
+    "jenavalve-technology-discover-ar-openapi.yml: WordPress site /wp-json spec, not split (roadmap#484)",
+    "jenavalve-technology-site-openapi.yml: WordPress site /wp-json spec, not split (roadmap#484)",
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "apis.yml register: written (+1 apis, 2 total)"
+  ],
+  "skipped": []
 }

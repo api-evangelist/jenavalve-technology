@@ -68,162 +68,36 @@ tags:
 - Patient Education
 - Private Company
 apis:
-- aid: jenavalve-technology:jenavalve-technology-authors-api
-  name: JenaValve Technology Authors API
-  description: Public author profiles attached to published content.
-  humanURL: https://jenavalve.com/news/
+- aid: jenavalve-technology:jenavalve-com-website-wordpress-rest
+  name: JenaValve Technology Website (WordPress REST)
+  description: >-
+    The public WordPress REST API (wp-json) of the JenaValve Technology website at jenavalve.com: the
+    route index of the site's content management system, catalogued as one site surface rather than as
+    separate APIs.
   baseURL: https://jenavalve.com/wp-json
   tags:
-  - Authors
+  - WordPress
+  x-surface: platform-generated
   properties:
-  - type: OpenAPI
-    url: openapi/jenavalve-technology-authors-api-openapi.yml
-  - type: Authentication
-    url: authentication/jenavalve-technology-authentication.yml
-  - type: Conventions
-    url: conventions/jenavalve-technology-conventions.yml
-  - type: ErrorCatalog
-    url: errors/jenavalve-technology-problem-types.yml
-  - type: DataModel
-    url: data-model/jenavalve-technology-data-model.yml
-  - type: Conformance
-    url: conformance/jenavalve-technology-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/jenavalve-technology-lifecycle.yml
-- aid: jenavalve-technology:jenavalve-technology-content-api
-  name: JenaValve Technology Content API
-  description: The AR education library — posts, pages and site search.
-  humanURL: https://jenavalve.com/news/
-  baseURL: https://jenavalve.com/wp-json
+  - type: Documentation
+    url: https://jenavalve.com/wp-json
+  x-platform: wordpress
+  x-platform-surface: rest
+- aid: jenavalve-technology:discover-ar-com-website-wordpress-rest
+  name: JenaValve Technology Website (WordPress REST)
+  description: >-
+    The public WordPress REST API (wp-json) of the JenaValve Technology website at discover-ar.com: the
+    route index of the site's content management system, catalogued as one site surface rather than as
+    separate APIs.
+  baseURL: https://discover-ar.com/wp-json
   tags:
-  - Content
+  - WordPress
+  x-surface: platform-generated
+  x-platform: wordpress
+  x-platform-surface: rest
   properties:
-  - type: OpenAPI
-    url: openapi/jenavalve-technology-content-api-openapi.yml
-  - type: Authentication
-    url: authentication/jenavalve-technology-authentication.yml
-  - type: Conventions
-    url: conventions/jenavalve-technology-conventions.yml
-  - type: ErrorCatalog
-    url: errors/jenavalve-technology-problem-types.yml
-  - type: DataModel
-    url: data-model/jenavalve-technology-data-model.yml
-  - type: Conformance
-    url: conformance/jenavalve-technology-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/jenavalve-technology-lifecycle.yml
-- aid: jenavalve-technology:jenavalve-technology-discovery-api
-  name: JenaValve Technology Discovery API
-  description: Route and capability discovery documents.
-  humanURL: https://jenavalve.com/news/
-  baseURL: https://jenavalve.com/wp-json
-  tags:
-  - Discovery
-  properties:
-  - type: OpenAPI
-    url: openapi/jenavalve-technology-discovery-api-openapi.yml
-  - type: Authentication
-    url: authentication/jenavalve-technology-authentication.yml
-  - type: Conventions
-    url: conventions/jenavalve-technology-conventions.yml
-  - type: ErrorCatalog
-    url: errors/jenavalve-technology-problem-types.yml
-  - type: DataModel
-    url: data-model/jenavalve-technology-data-model.yml
-  - type: Conformance
-    url: conformance/jenavalve-technology-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/jenavalve-technology-lifecycle.yml
-- aid: jenavalve-technology:jenavalve-technology-media-api
-  name: JenaValve Technology Media API
-  description: Uploaded media library items.
-  humanURL: https://jenavalve.com/news/
-  baseURL: https://jenavalve.com/wp-json
-  tags:
-  - Media
-  properties:
-  - type: OpenAPI
-    url: openapi/jenavalve-technology-media-api-openapi.yml
-  - type: Authentication
-    url: authentication/jenavalve-technology-authentication.yml
-  - type: Conventions
-    url: conventions/jenavalve-technology-conventions.yml
-  - type: ErrorCatalog
-    url: errors/jenavalve-technology-problem-types.yml
-  - type: DataModel
-    url: data-model/jenavalve-technology-data-model.yml
-  - type: Conformance
-    url: conformance/jenavalve-technology-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/jenavalve-technology-lifecycle.yml
-- aid: jenavalve-technology:jenavalve-technology-seo-api
-  name: JenaValve Technology SEO API
-  description: Yoast SEO head-metadata endpoint.
-  humanURL: https://jenavalve.com/news/
-  baseURL: https://jenavalve.com/wp-json
-  tags:
-  - SEO
-  properties:
-  - type: OpenAPI
-    url: openapi/jenavalve-technology-seo-api-openapi.yml
-  - type: Authentication
-    url: authentication/jenavalve-technology-authentication.yml
-  - type: Conventions
-    url: conventions/jenavalve-technology-conventions.yml
-  - type: ErrorCatalog
-    url: errors/jenavalve-technology-problem-types.yml
-  - type: DataModel
-    url: data-model/jenavalve-technology-data-model.yml
-  - type: Conformance
-    url: conformance/jenavalve-technology-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/jenavalve-technology-lifecycle.yml
-- aid: jenavalve-technology:jenavalve-technology-taxonomy-api
-  name: JenaValve Technology Taxonomy API
-  description: The articles / videos / audio / presentations category taxonomy.
-  humanURL: https://jenavalve.com/news/
-  baseURL: https://jenavalve.com/wp-json
-  tags:
-  - Taxonomy
-  properties:
-  - type: OpenAPI
-    url: openapi/jenavalve-technology-taxonomy-api-openapi.yml
-  - type: Authentication
-    url: authentication/jenavalve-technology-authentication.yml
-  - type: Conventions
-    url: conventions/jenavalve-technology-conventions.yml
-  - type: ErrorCatalog
-    url: errors/jenavalve-technology-problem-types.yml
-  - type: DataModel
-    url: data-model/jenavalve-technology-data-model.yml
-  - type: Conformance
-    url: conformance/jenavalve-technology-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/jenavalve-technology-lifecycle.yml
-- aid: jenavalve-technology:jenavalve-technology-o-embed-api
-  name: JenaValve Technology o Embed API
-  description: oEmbed provider endpoint for discover-ar.com URLs.
-  humanURL: https://jenavalve.com/news/
-  baseURL: https://jenavalve.com/wp-json
-  tags:
-  - oEmbed
-  tags_raw:
-  - o Embed
-  properties:
-  - type: OpenAPI
-    url: openapi/jenavalve-technology-o-embed-api-openapi.yml
-  - type: Authentication
-    url: authentication/jenavalve-technology-authentication.yml
-  - type: Conventions
-    url: conventions/jenavalve-technology-conventions.yml
-  - type: ErrorCatalog
-    url: errors/jenavalve-technology-problem-types.yml
-  - type: DataModel
-    url: data-model/jenavalve-technology-data-model.yml
-  - type: Conformance
-    url: conformance/jenavalve-technology-conformance.yml
-  - type: Lifecycle
-    url: lifecycle/jenavalve-technology-lifecycle.yml
+  - type: Documentation
+    url: https://discover-ar.com/wp-json
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

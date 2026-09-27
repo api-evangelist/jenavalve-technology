@@ -21,6 +21,9 @@ tags:
   description: Route and capability discovery documents.
 paths:
   /:
+    servers:
+    - url: https://discover-ar.com/wp-json
+      description: Discover AR WordPress REST API
     get:
       tags:
       - Discovery
@@ -34,10 +37,10 @@ paths:
             application/json:
               schema:
                 type: object
+  /wp/v2/types:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
-  /wp/v2/types:
     get:
       tags:
       - Discovery
@@ -51,10 +54,10 @@ paths:
             application/json:
               schema:
                 type: object
+  /wp/v2/taxonomies:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
-  /wp/v2/taxonomies:
     get:
       tags:
       - Discovery
@@ -67,10 +70,10 @@ paths:
             application/json:
               schema:
                 type: object
+  /wp/v2/statuses:
     servers:
     - url: https://discover-ar.com/wp-json
       description: Discover AR WordPress REST API
-  /wp/v2/statuses:
     get:
       tags:
       - Discovery
@@ -83,10 +86,10 @@ paths:
             application/json:
               schema:
                 type: object
-    servers:
-    - url: https://discover-ar.com/wp-json
-      description: Discover AR WordPress REST API
   /wp/v2/types/{type}:
+    servers:
+    - url: https://jenavalve.com/wp-json
+      description: JenaValve corporate site WordPress REST API
     get:
       tags:
       - Discovery
@@ -108,10 +111,10 @@ paths:
                 $ref: '#/components/schemas/ContentType'
         '404':
           $ref: '#/components/responses/NotFound'
+  /wp/v2/taxonomies/{taxonomy}:
     servers:
     - url: https://jenavalve.com/wp-json
       description: JenaValve corporate site WordPress REST API
-  /wp/v2/taxonomies/{taxonomy}:
     get:
       tags:
       - Discovery
@@ -133,10 +136,10 @@ paths:
                 type: object
         '404':
           $ref: '#/components/responses/NotFound'
+  /wp/v2/statuses/{status}:
     servers:
     - url: https://jenavalve.com/wp-json
       description: JenaValve corporate site WordPress REST API
-  /wp/v2/statuses/{status}:
     get:
       tags:
       - Discovery
@@ -158,9 +161,6 @@ paths:
                 type: object
         '404':
           $ref: '#/components/responses/NotFound'
-    servers:
-    - url: https://jenavalve.com/wp-json
-      description: JenaValve corporate site WordPress REST API
 components:
   schemas:
     Error:
@@ -210,39 +210,6 @@ components:
           type: string
         _links:
           type: object
-    ApiIndex:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        url:
-          type: string
-          format: uri
-        home:
-          type: string
-          format: uri
-        gmt_offset:
-          type: number
-        timezone_string:
-          type: string
-        namespaces:
-          type: array
-          items:
-            type: string
-        authentication:
-          type: object
-          description: Supported authentication mechanisms. This site advertises WordPress application passwords, authorized at /wp-admin/authorize-application.php.
-        routes:
-          type: object
-          description: Map of every registered route to its methods, args and endpoints.
-        site_logo:
-          type: integer
-        site_icon:
-          type: integer
-        site_icon_url:
-          type: string
   responses:
     NotFound:
       description: The requested object does not exist.
