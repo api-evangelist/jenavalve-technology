@@ -50,6 +50,13 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested object does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -69,10 +76,3 @@ components:
       required:
       - code
       - message
-  responses:
-    NotFound:
-      description: The requested object does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'

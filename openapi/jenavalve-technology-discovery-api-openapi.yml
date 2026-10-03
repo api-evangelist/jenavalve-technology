@@ -162,29 +162,14 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested object does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
-        message:
-          type: string
-          description: Human-readable message.
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-              description: HTTP status code, repeated in the body.
-            params:
-              type: object
-              description: Per-parameter validation messages, present on `rest_invalid_param`.
-      required:
-      - code
-      - message
     ContentType:
       type: object
       properties:
@@ -210,13 +195,28 @@ components:
           type: string
         _links:
           type: object
-  responses:
-    NotFound:
-      description: The requested object does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on `rest_invalid_param`.
+      required:
+      - code
+      - message
 x-refined-from:
 - jenavalve-technology-discover-ar-openapi.yml
 - jenavalve-technology-site-openapi.yml

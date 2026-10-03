@@ -95,14 +95,6 @@ paths:
           $ref: '#/components/responses/TermNotFound'
 components:
   parameters:
-    Slug:
-      name: slug
-      in: query
-      description: Limit results to objects with one or more specific slugs.
-      schema:
-        type: array
-        items:
-          type: string
     Id:
       name: id
       in: path
@@ -119,6 +111,14 @@ components:
         minimum: 1
         maximum: 100
         default: 10
+    Slug:
+      name: slug
+      in: query
+      description: Limit results to objects with one or more specific slugs.
+      schema:
+        type: array
+        items:
+          type: string
     Page:
       name: page
       in: query
@@ -134,39 +134,29 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-  headers:
-    XWPTotal:
-      description: Total number of items in the unpaginated collection.
-      schema:
-        type: integer
   schemas:
-    Term:
+    Error:
       type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
       properties:
-        id:
-          type: integer
-        count:
-          type: integer
-        description:
+        code:
           type: string
-        link:
+          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
+        message:
           type: string
-          format: uri
-        name:
-          type: string
-        slug:
-          type: string
-        taxonomy:
-          type: string
-        parent:
-          type: integer
-        _links:
+          description: Human-readable message.
+        data:
           type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on `rest_invalid_param`.
       required:
-      - id
-      - name
-      - slug
-      - taxonomy
+      - code
+      - message
     Term_2:
       type: object
       properties:
@@ -197,28 +187,38 @@ components:
       - name
       - slug
       - taxonomy
-    Error:
+    Term:
       type: object
-      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
       properties:
-        code:
+        id:
+          type: integer
+        count:
+          type: integer
+        description:
           type: string
-          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
-        message:
+        link:
           type: string
-          description: Human-readable message.
-        data:
+          format: uri
+        name:
+          type: string
+        slug:
+          type: string
+        taxonomy:
+          type: string
+        parent:
+          type: integer
+        _links:
           type: object
-          properties:
-            status:
-              type: integer
-              description: HTTP status code, repeated in the body.
-            params:
-              type: object
-              description: Per-parameter validation messages, present on `rest_invalid_param`.
       required:
-      - code
-      - message
+      - id
+      - name
+      - slug
+      - taxonomy
+  headers:
+    XWPTotal:
+      description: Total number of items in the unpaginated collection.
+      schema:
+        type: integer
 x-refined-from:
 - jenavalve-technology-discover-ar-openapi.yml
 - jenavalve-technology-site-openapi.yml

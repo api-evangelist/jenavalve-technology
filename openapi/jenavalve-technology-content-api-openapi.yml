@@ -289,29 +289,20 @@ paths:
                   $ref: '#/components/schemas/Page'
 components:
   parameters:
+    Page:
+      name: page
+      in: query
+      description: One-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
     Search:
       name: search
       in: query
       description: Limit results to those matching a free-text string.
       schema:
         type: string
-    Slug:
-      name: slug
-      in: query
-      description: Limit results to objects with one or more specific slugs.
-      schema:
-        type: array
-        items:
-          type: string
-    PerPage:
-      name: per_page
-      in: query
-      description: Items per page. Maximum 100.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
     Order:
       name: order
       in: query
@@ -322,20 +313,15 @@ components:
         - asc
         - desc
         default: desc
-    Page:
-      name: page
+    PerPage:
+      name: per_page
       in: query
-      description: One-based page of the collection to return.
+      description: Items per page. Maximum 100.
       schema:
         type: integer
         minimum: 1
-        default: 1
-    Fields:
-      name: _fields
-      in: query
-      description: Sparse fieldset — comma-separated list of top-level fields to include.
-      schema:
-        type: string
+        maximum: 100
+        default: 10
     OrderBy:
       name: orderby
       in: query
@@ -350,13 +336,12 @@ components:
         - relevance
         - slug
         - title
-    Id:
-      name: id
-      in: path
-      required: true
-      description: Unique numeric identifier for the object.
+    Fields:
+      name: _fields
+      in: query
+      description: Sparse fieldset — comma-separated list of top-level fields to include.
       schema:
-        type: integer
+        type: string
     PerPage_2:
       name: per_page
       in: query
@@ -366,14 +351,22 @@ components:
         minimum: 1
         maximum: 100
         default: 10
-  schemas:
-    Rendered:
-      type: object
-      properties:
-        rendered:
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Unique numeric identifier for the object.
+      schema:
+        type: integer
+    Slug:
+      name: slug
+      in: query
+      description: Limit results to objects with one or more specific slugs.
+      schema:
+        type: array
+        items:
           type: string
-        protected:
-          type: boolean
+  schemas:
     SearchResult:
       type: object
       properties:
@@ -395,6 +388,62 @@ components:
       - title
       - url
       - type
+    Rendered_2:
+      type: object
+      description: A rendered HTML field.
+      properties:
+        rendered:
+          type: string
+        protected:
+          type: boolean
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        slug:
+          type: string
+        status:
+          type: string
+        type:
+          type: string
+        link:
+          type: string
+          format: uri
+        title:
+          $ref: '#/components/schemas/Rendered'
+        content:
+          $ref: '#/components/schemas/Rendered'
+        excerpt:
+          $ref: '#/components/schemas/Rendered'
+        author:
+          type: integer
+        featured_media:
+          type: integer
+        categories:
+          type: array
+          description: Category term IDs — the media-format segmentation of the library.
+          items:
+            type: integer
+        tags:
+          type: array
+          items:
+            type: integer
+        meta:
+          type: object
+        _links:
+          type: object
+      required:
+      - id
+      - slug
+      - link
+      - title
     Page:
       type: object
       properties:
@@ -461,57 +510,8 @@ components:
       required:
       - code
       - message
-    Post:
+    Rendered:
       type: object
-      properties:
-        id:
-          type: integer
-        date:
-          type: string
-          format: date-time
-        modified:
-          type: string
-          format: date-time
-        slug:
-          type: string
-        status:
-          type: string
-        type:
-          type: string
-        link:
-          type: string
-          format: uri
-        title:
-          $ref: '#/components/schemas/Rendered'
-        content:
-          $ref: '#/components/schemas/Rendered'
-        excerpt:
-          $ref: '#/components/schemas/Rendered'
-        author:
-          type: integer
-        featured_media:
-          type: integer
-        categories:
-          type: array
-          description: Category term IDs — the media-format segmentation of the library.
-          items:
-            type: integer
-        tags:
-          type: array
-          items:
-            type: integer
-        meta:
-          type: object
-        _links:
-          type: object
-      required:
-      - id
-      - slug
-      - link
-      - title
-    Rendered_2:
-      type: object
-      description: A rendered HTML field.
       properties:
         rendered:
           type: string
@@ -541,10 +541,6 @@ components:
             data:
               status: 404
   headers:
-    LinkPagination:
-      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
-      schema:
-        type: string
     XWPTotalPages:
       description: Total number of pages available at the current per_page size.
       schema:
@@ -553,6 +549,10 @@ components:
       description: Total number of items in the unpaginated collection.
       schema:
         type: integer
+    LinkPagination:
+      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
+      schema:
+        type: string
 x-refined-from:
 - jenavalve-technology-discover-ar-openapi.yml
 - jenavalve-technology-site-openapi.yml

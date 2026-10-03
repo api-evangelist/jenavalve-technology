@@ -83,19 +83,6 @@ paths:
         '404':
           $ref: '#/components/responses/InvalidPostId'
 components:
-  headers:
-    LinkPagination:
-      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
-      schema:
-        type: string
-    XWPTotal:
-      description: Total number of items in the unpaginated collection.
-      schema:
-        type: integer
-    XWPTotalPages:
-      description: Total number of pages available at the current per_page size.
-      schema:
-        type: integer
   parameters:
     Id:
       name: id
@@ -104,12 +91,6 @@ components:
       description: Unique numeric identifier for the object.
       schema:
         type: integer
-    Search:
-      name: search
-      in: query
-      description: Limit results to those matching a free-text string.
-      schema:
-        type: string
     PerPage:
       name: per_page
       in: query
@@ -127,6 +108,12 @@ components:
         type: integer
         minimum: 1
         default: 1
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a free-text string.
+      schema:
+        type: string
     Fields:
       name: _fields
       in: query
@@ -134,6 +121,31 @@ components:
       schema:
         type: string
   schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+            params:
+              type: object
+      required:
+      - code
+      - message
+    Rendered:
+      type: object
+      properties:
+        rendered:
+          type: string
+        protected:
+          type: boolean
     MediaItem:
       type: object
       properties:
@@ -168,31 +180,19 @@ components:
       - id
       - source_url
       - mime_type
-    Rendered:
-      type: object
-      properties:
-        rendered:
-          type: string
-        protected:
-          type: boolean
-    Error:
-      type: object
-      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-            params:
-              type: object
-      required:
-      - code
-      - message
+  headers:
+    XWPTotalPages:
+      description: Total number of pages available at the current per_page size.
+      schema:
+        type: integer
+    XWPTotal:
+      description: Total number of items in the unpaginated collection.
+      schema:
+        type: integer
+    LinkPagination:
+      description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
+      schema:
+        type: string
   responses:
     InvalidPostId:
       description: No object exists with the given ID.
