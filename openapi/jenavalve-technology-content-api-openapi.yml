@@ -288,85 +288,46 @@ paths:
                 items:
                   $ref: '#/components/schemas/Page'
 components:
-  parameters:
-    OrderBy:
-      name: orderby
-      in: query
-      description: Sort collection by object attribute.
-      schema:
-        type: string
-        enum:
-        - date
-        - id
-        - include
-        - modified
-        - relevance
-        - slug
-        - title
-    PerPage_2:
-      name: per_page
-      in: query
-      description: Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400 `rest_invalid_param`.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    Page:
-      name: page
-      in: query
-      description: One-based page of the collection to return.
-      schema:
-        type: integer
-        minimum: 1
-        default: 1
-    Search:
-      name: search
-      in: query
-      description: Limit results to those matching a free-text string.
-      schema:
-        type: string
-    Slug:
-      name: slug
-      in: query
-      description: Limit results to objects with one or more specific slugs.
-      schema:
-        type: array
-        items:
-          type: string
-    Order:
-      name: order
-      in: query
-      description: Sort direction.
-      schema:
-        type: string
-        enum:
-        - asc
-        - desc
-        default: desc
-    Fields:
-      name: _fields
-      in: query
-      description: Sparse fieldset — comma-separated list of top-level fields to include.
-      schema:
-        type: string
-    PerPage:
-      name: per_page
-      in: query
-      description: Items per page. Maximum 100.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
-    Id:
-      name: id
-      in: path
-      required: true
-      description: Unique numeric identifier for the object.
-      schema:
-        type: integer
   schemas:
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        url:
+          type: string
+          format: uri
+        type:
+          type: string
+        subtype:
+          type: string
+        _links:
+          type: object
+      required:
+      - id
+      - title
+      - url
+      - type
+    Error:
+      type: object
+      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+            params:
+              type: object
+      required:
+      - code
+      - message
     Post:
       type: object
       properties:
@@ -415,6 +376,13 @@ components:
       - slug
       - link
       - title
+    Rendered:
+      type: object
+      properties:
+        rendered:
+          type: string
+        protected:
+          type: boolean
     Page:
       type: object
       properties:
@@ -463,24 +431,6 @@ components:
       - slug
       - link
       - title
-    Error:
-      type: object
-      description: The WordPress REST error envelope — `application/json` with a bespoke `{code, message, data.status}` shape, not RFC 9457 problem+json.
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-            params:
-              type: object
-      required:
-      - code
-      - message
     Rendered_2:
       type: object
       description: A rendered HTML field.
@@ -489,46 +439,85 @@ components:
           type: string
         protected:
           type: boolean
-    Rendered:
-      type: object
-      properties:
-        rendered:
+  parameters:
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    Id:
+      name: id
+      in: path
+      required: true
+      description: Unique numeric identifier for the object.
+      schema:
+        type: integer
+    Order:
+      name: order
+      in: query
+      description: Sort direction.
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: desc
+    PerPage_2:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100 — `per_page=200` is rejected with HTTP 400 `rest_invalid_param`.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    OrderBy:
+      name: orderby
+      in: query
+      description: Sort collection by object attribute.
+      schema:
+        type: string
+        enum:
+        - date
+        - id
+        - include
+        - modified
+        - relevance
+        - slug
+        - title
+    Search:
+      name: search
+      in: query
+      description: Limit results to those matching a free-text string.
+      schema:
+        type: string
+    Page:
+      name: page
+      in: query
+      description: One-based page of the collection to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    Slug:
+      name: slug
+      in: query
+      description: Limit results to objects with one or more specific slugs.
+      schema:
+        type: array
+        items:
           type: string
-        protected:
-          type: boolean
-    SearchResult:
-      type: object
-      properties:
-        id:
-          type: integer
-        title:
-          type: string
-        url:
-          type: string
-          format: uri
-        type:
-          type: string
-        subtype:
-          type: string
-        _links:
-          type: object
-      required:
-      - id
-      - title
-      - url
-      - type
+    Fields:
+      name: _fields
+      in: query
+      description: Sparse fieldset — comma-separated list of top-level fields to include.
+      schema:
+        type: string
   responses:
-    InvalidPostId:
-      description: No object exists with the given ID.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          example:
-            code: rest_post_invalid_id
-            message: Invalid post ID.
-            data:
-              status: 404
     InvalidParam:
       description: A query parameter failed validation.
       content:
@@ -540,17 +529,28 @@ components:
             message: 'Invalid parameter(s): per_page'
             data:
               status: 400
+    InvalidPostId:
+      description: No object exists with the given ID.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: rest_post_invalid_id
+            message: Invalid post ID.
+            data:
+              status: 404
   headers:
-    XWPTotal:
-      description: Total number of items in the unpaginated collection.
+    XWPTotalPages:
+      description: Total number of pages available at the current per_page size.
       schema:
         type: integer
     LinkPagination:
       description: RFC 8288 Link header carrying `rel="next"` and `rel="prev"` page URLs.
       schema:
         type: string
-    XWPTotalPages:
-      description: Total number of pages available at the current per_page size.
+    XWPTotal:
+      description: Total number of items in the unpaginated collection.
       schema:
         type: integer
 x-refined-from:

@@ -103,6 +103,15 @@ components:
         type: integer
         minimum: 1
         default: 1
+    PerPage:
+      name: per_page
+      in: query
+      description: Items per page. Maximum 100.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
     Id:
       name: id
       in: path
@@ -118,15 +127,6 @@ components:
         type: array
         items:
           type: string
-    PerPage:
-      name: per_page
-      in: query
-      description: Items per page. Maximum 100.
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 100
-        default: 10
   responses:
     TermNotFound:
       description: No taxonomy term exists with the given ID.
@@ -135,6 +135,28 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
+        message:
+          type: string
+          description: Human-readable message.
+        data:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: HTTP status code, repeated in the body.
+            params:
+              type: object
+              description: Per-parameter validation messages, present on `rest_invalid_param`.
+      required:
+      - code
+      - message
     Term_2:
       type: object
       properties:
@@ -192,28 +214,6 @@ components:
       - name
       - slug
       - taxonomy
-    Error:
-      type: object
-      description: The WordPress REST error envelope. This is NOT RFC 9457 problem+json — it is served as `application/json` with a bespoke `{code, message, data.status}` shape.
-      properties:
-        code:
-          type: string
-          description: Machine-readable error slug, e.g. `rest_post_invalid_id`.
-        message:
-          type: string
-          description: Human-readable message.
-        data:
-          type: object
-          properties:
-            status:
-              type: integer
-              description: HTTP status code, repeated in the body.
-            params:
-              type: object
-              description: Per-parameter validation messages, present on `rest_invalid_param`.
-      required:
-      - code
-      - message
   headers:
     XWPTotal:
       description: Total number of items in the unpaginated collection.
