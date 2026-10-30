@@ -64,5 +64,109 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-JenaValve Technology is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://forgeglobal.com/jenavalve-technology_stock/
+JenaValve Technology, Inc. is a privately held medical-device company headquartered at 4 Cromwell, Irvine, California, with an EU headquarters in the Central Tower, Landsberger Str. 110, Munich and a UK office at Unit 9A Astley Way, Swillington, Leeds. Founded in 2006 on a concept developed in 1995 by Professors Hans Figulla and Markus Ferrari, it develops the Trilogy Heart Valve System, a transcatheter aortic valve replacement (TAVR) device purpose-built for the minimally invasive treatment of severe aortic regurgitation (AR) as well as aortic stenosis (AS), delivered transfemorally and transapically with a porcine pericardial valve. The system carries a CE mark and is an investigational device in the United States, supported by the ALIGN-AR and ARTIST clinical studies and the JENA-VAD registry. The company has raised roughly $364 million across 13 rounds from investors including Bain Capital Life Sciences, the Qatar Investment Authority, Pictet Alternative Advisors, Innovatus Capital Partners and Peijia Medical. JenaValve operates no developer API programme — there is no developer portal, no API documentation, no keys, no SDKs, no CLI, no MCP server, no agent card, no changelog and no status page, and no developer, api, docs, status or trust subdomain resolves. Its two corporate WordPress sites do each serve an anonymously readable REST API, and on both of them the standard content collections are wide open while the administrative routes are correctly locked to 401.
+
+**Areas:** Company · Medical Devices · Healthcare · Cardiology · Structural Heart · TAVR · Aortic Regurgitation · Aortic Stenosis · Heart Valves · Clinical Trials · Patient Education · Private Company
+
+## JenaValve Technology on APIs.io
+
+Everything profiled for JenaValve Technology is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/jenavalve-technology/](https://apis.io/providers/jenavalve-technology/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [JenaValve Technology Website (WordPress REST)](https://apis.io/apis/jenavalve-technology/jenavalve-com-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the JenaValve Technology website at jenavalve.com: the route index of the site's content management system,…
+- [JenaValve Technology Website (WordPress REST)](https://apis.io/apis/jenavalve-technology/discover-ar-com-website-wordpress-rest/) — The public WordPress REST API (wp-json) of the JenaValve Technology website at discover-ar.com: the route index of the site's content management system,…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Collections (7)
+
+Postman and Open Collection request collections.
+
+- [Moved to /providers/jenavalve-technology/](https://apis.io/collections/jenavalve-technology/open-jenavalve-technology-authors-api/)
+- [Moved to /providers/jenavalve-technology/](https://apis.io/collections/jenavalve-technology/open-jenavalve-technology-content-api/)
+- [Moved to /providers/jenavalve-technology/](https://apis.io/collections/jenavalve-technology/open-jenavalve-technology-discovery-api/)
+- [Moved to /providers/jenavalve-technology/](https://apis.io/collections/jenavalve-technology/open-jenavalve-technology-media-api/)
+- [Jenavalve Technology O Embed API](https://apis.io/collections/jenavalve-technology/open-jenavalve-technology-oembed-api/)
+- [Moved to /providers/jenavalve-technology/](https://apis.io/collections/jenavalve-technology/open-jenavalve-technology-seo-api/)
+- [Moved to /providers/jenavalve-technology/](https://apis.io/collections/jenavalve-technology/open-jenavalve-technology-taxonomy-api/)
+
+#### Overlays (2)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Jenavalve Technology Discover Ar Overlay](https://apis.io/overlays/jenavalve-technology/jenavalve-technology-discover-ar-overlay/)
+- [Jenavalve Technology Site Overlay](https://apis.io/overlays/jenavalve-technology/jenavalve-technology-site-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Jenavalve Technology Authentication](https://apis.io/security/jenavalve-technology/jenavalve-technology-authentication/)
+- [Jenavalve Technology Domain Security](https://apis.io/security/jenavalve-technology/jenavalve-technology-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://jenavalve.com/)
+- [Documentation](https://eifu.jenavalve.com/)
+- [Support](https://jenavalve.com/contact/)
+- [Blog](https://jenavalve.com/news/)
+- [Terms of service](https://jenavalve.com/terms-of-use/)
+- [Privacy policy](https://jenavalve.com/privacy-policy/)
+
+## API Evangelist rating
+
+**Kin Score 23.5** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 58.9 |
+| Contract quality | 1.7 |
+| Contract governance | 4.5 |
+| Operational transparency | 0.0 |
+| Developer ergonomics | 20.8 |
+| Access clarity | 57.1 |
+
+**Agent readiness 7.3** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | na |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | na |
+| Error Semantics | documented (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | — |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 19.5** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/jenavalve-technology/](https://apis.io/providers/jenavalve-technology/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for JenaValve Technology: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/jenavalve-technology/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
